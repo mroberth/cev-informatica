@@ -1,0 +1,26 @@
+# Dependencias
+vendor/
+
+# Archivos de configuración con credenciales
+config/*.php
+
+# Logs
+*.log
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Entorno
+.env
+.env.local
+
+# Node (por si en el futuro agregas un frontend con npm)
+node_modules/

@@ -1,0 +1,13 @@
+{
+    "name": "roberth/cev-informatica",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "src/Core/",
+            "App\\": "src/Modules/"
+        },
+        "files": [
+            "src/Core/Helpers/funciones.php"
+        ]
+    },
+    "require": {}
+}
