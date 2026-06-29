@@ -118,13 +118,16 @@ export const initLogin = () => {
         };
 
         // 3. Disparar a través de tu cliente blindado (asumiendo que tu ruta de login es 'auth/login')
-        const response = await apiClient.post('auth/login', payload);
+        const response = await apiClient.post('/iniciar_sesion', payload);
 
         // 4. Guardar la sesión JWT de forma local para las siguientes peticiones del cliente
         const user = response.data.user;
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh_token);
         localStorage.setItem('user_rol', user.rol || user.nombre_rol);
+        localStorage.setItem('user_nombre', user.nombre || '');
+        localStorage.setItem('user_apellido', user.apellido || '');
+        localStorage.setItem('user_email', user.correo || '');
 
         CevAlert.success({
           title: '¡Bienvenido!',

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types= 1);
+declare(strict_types=1);
 
 class UserDTO{
     public function __construct(
@@ -7,9 +7,9 @@ class UserDTO{
         private readonly string $nombre,
         private readonly string $apellido,
         private readonly string $correo,
-        private readonly string $password,
-        private readonly int $id_rol,
-        private readonly string $estado
+        private readonly string $passwordHash,
+        private readonly string $estado,
+        private readonly string $nombreRol
     ){}
 
     public function getID(): int{
@@ -28,15 +28,26 @@ class UserDTO{
         return $this->correo;
     }
 
-    public function getPassword(): string{
-        return $this->password;
-    }
-
-    public function getIdRol(): int{
-        return $this->id_rol;
+    public function getPasswordHash(): string{
+        return $this->passwordHash;
     }
 
     public function getEstado(): string{
         return $this->estado;
+    }
+
+    public function getNombreRol(): string{
+        return $this->nombreRol;
+    }
+
+    public function toArray(): array{
+        return [
+            'id' => $this->id,
+            'nombre' => $this->nombre,
+            'apellido' => $this->apellido,
+            'correo' => $this->correo,
+            'estado' => $this->estado,
+            'nombre_rol' => $this->nombreRol
+        ];
     }
 }

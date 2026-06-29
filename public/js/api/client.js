@@ -86,8 +86,7 @@ class ApiClient {
     }
 
     try {
-      // Apunta al endpoint relativo de refresco, p.ej: 'auth/refresh' o 'refresh'
-      const urlRefresh = `${this.baseUrl}auth/refresh`; 
+      const urlRefresh = `${this.baseUrl}refresh`; 
       
       const res = await fetch(urlRefresh, {
         method: 'POST',

@@ -6,8 +6,13 @@
             "App\\": "src/Modules/"
         },
         "files": [
-            "src/Core/Helpers/funciones.php"
+            "src/Core/Helpers/funciones.php",
+            "src/Modules/Auth/DTO/UserDTO.php",
+            "src/Modules/Auth/DTO/TokenDTO.php",
+            "src/Modules/Auth/DTO/RefreshTokenDTO.php"
         ]
     },
-    "require": {}
+    "require": {
+        "firebase/php-jwt": "^6.0"
+    }
 }
