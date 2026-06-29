@@ -8,4 +8,5 @@
     <link rel="stylesheet" href="/plugins/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/plugins/bootstrap-icons/bootstrap-icons.css">
     <script src="/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/sweetalert2/sweetalert.js"></script>
 </head>

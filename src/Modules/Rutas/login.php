@@ -5,3 +5,8 @@ Router::get('login', function(){
     cargar_controlador('Auth', 'loginController.php');
     mostrarLogin();
 });
+
+Router::post('iniciar_sesion', function(){
+    cargar_controlador('Auth', 'loginController.php');
+    iniciar_sesion();
+});

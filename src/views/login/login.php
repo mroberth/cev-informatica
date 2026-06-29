@@ -21,22 +21,24 @@
               <form id="form-login" novalidate>
                 <div class="mb-3">
                   <label for="email" class="form-label text-secondary small fw-bold">Correo electrónico</label>
-                  <div class="input-group">
+                  <div class="input-group has-validation">
                     <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-envelope"></i></span>
-                    <input type="email" class="form-control bg-white border-start-0 ps-0" id="email" name="email"
-                      placeholder="ejemplo@correo.com" required>
+                    <input type="email" class="form-control bg-white border-start-0 ps-0" id="correo" name="correo"
+                      placeholder="ejemplo@correo.com">
+                    <div class="invalid-feedback" id="correoError"></div>
                   </div>
                 </div>
 
                 <div class="mb-4">
                   <label for="password" class="form-label text-secondary small fw-bold">Contraseña</label>
-                  <div class="input-group">
+                  <div class="input-group has-validation">
                     <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-lock"></i></span>
                     <input type="password" class="form-control bg-white border-start-0 border-end-0 ps-0" id="password"
-                      name="password" placeholder="Ingresa tu contraseña" required>
+                      name="password" placeholder="Ingresa tu contraseña">
                     <button class="input-group-text bg-white text-muted border-start-0" type="button" id="togglePassword" tabindex="-1">
                       <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
                     </button>
+                    <div class="invalid-feedback" id="passwordError"></div>
                   </div>
                 </div>
 
@@ -58,23 +60,15 @@
   </main>
 
   <?php require_once BASE_PATH . '/src/views/layouts/footer.php'; ?>
+  <script type="module" src="<?php echo BASE_URL; ?>js/modules/auth/loginController.js"></script>
 
-  <script>
-    document.getElementById('togglePassword').addEventListener('click', function () {
-      const input = document.getElementById('password');
-      const icon = document.getElementById('togglePasswordIcon');
-      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-      input.setAttribute('type', type);
-      icon.classList.toggle('bi-eye');
-      icon.classList.toggle('bi-eye-slash');
-    });
-
-    document.getElementById('form-login').addEventListener('submit', function (e) {
-      e.preventDefault();
-      fetch('/login', { method: 'POST' })
-        .then(r => r.text())
-        .then(html => { document.open(); document.write(html); document.close(); });
-    });
+  <script type="module">
+      import { initLogin } from '<?php echo BASE_URL; ?>js/modules/auth/loginController.js';
+      
+      // Inicializamos los listeners del formulario
+      document.addEventListener('DOMContentLoaded', () => {
+          initLogin();
+      });
   </script>
 </body>
 </html>
