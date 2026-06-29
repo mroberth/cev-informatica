@@ -91,6 +91,7 @@ class ApiClient {
       const res = await fetch(urlRefresh, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ refresh_token: refreshToken }),
       });
 

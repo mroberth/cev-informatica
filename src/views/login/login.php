@@ -18,6 +18,14 @@
                 <p class="text-muted small">Ingresa tus credenciales institucionales para acceder al Control de Estudios Virtual.</p>
               </div>
 
+              <?php if(isset($_SESSION['error_auth'])): ?>
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                  <i class="bi bi-shield-exclamation me-2"></i>
+                  <div><?= htmlspecialchars($_SESSION['error_auth']) ?></div>
+                  <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+                </div>
+              <?php unset($_SESSION['error_auth']); endif; ?>
+
               <form id="form-login" novalidate>
                 <div class="mb-3">
                   <label for="email" class="form-label text-secondary small fw-bold">Correo electrónico</label>

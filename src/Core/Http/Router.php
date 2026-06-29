@@ -111,7 +111,7 @@ class Router {
 
             //Verificar si el middleware aplica para este metodo y ruta
             if(($metodosMiddleware === 'ALL' || $metodosMiddleware === $metodo) &&
-                ($patronMiddleware === $ruta || self::coincidePatron($patronMiddleware, $ruta))){
+                ($patronMiddleware === '*' || $patronMiddleware === $ruta || self::coincidePatron($patronMiddleware, $ruta))){
                 call_user_func($middleware['manejador']);
             }
         }

@@ -136,9 +136,9 @@ export const initLogin = () => {
           showConfirmButton: false
         });
 
-        // 5. Redirección basada en roles controlada por el frontend
+        // 5. Redirección según la URL que indique el backend
         setTimeout(() => {
-          window.location.href = user.rol === 'Admin' ? '/a/dashboard' : '/u/dashboard';
+          window.location.href = response.data.redirect || '/u/dashboard';
         }, 1500);
 
       } catch (error) {

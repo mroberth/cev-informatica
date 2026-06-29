@@ -29,6 +29,7 @@
               <p class="text-muted mb-1">Bienvenido al sistema, <strong id="userName">Usuario</strong></p>
               <p class="text-muted small mb-0" id="userEmail"></p>
               <p class="text-muted small mb-0" id="userRol"></p>
+              <p class="text-muted small mb-0" id="token"></p>
               <hr class="my-4">
               <p class="text-secondary small">
                 Esta es una vista temporal. El dashboard completo estará disponible próximamente.

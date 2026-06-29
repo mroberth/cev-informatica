@@ -1,5 +1,11 @@
 <?php
 use Core\Http\Router;
+use Core\Middleware\GuestMiddleware;
+
+// Si ya tiene sesión activa, que no vea el login
+Router::antes('GET', 'login', function(){
+    GuestMiddleware::procesar();
+});
 
 Router::get('login', function(){
     cargar_controlador('Auth', 'loginController.php');

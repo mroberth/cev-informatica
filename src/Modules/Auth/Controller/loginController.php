@@ -34,10 +34,21 @@ function iniciar_sesion(): void{
 
         $tokenDTO = $authService->iniciarSesion($correo, $password);
 
+        setcookie('access_token', $tokenDTO->getAccessToken(), [
+            'expires' => time() + 900,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+
+        $data = $tokenDTO->toArray();
+        $rol = strtolower($data['user']['nombre_rol'] ?? '');
+        $data['redirect'] = $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+
         http_response_code(200);
         echo json_encode([
             'status' => 'success',
-            'data' => $tokenDTO->toArray()
+            'data' => $data
         ], JSON_UNESCAPED_UNICODE);
     } catch(Exception $e){
         $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
@@ -73,10 +84,21 @@ function refrescar_token(): void{
 
         $tokenDTO = $authService->refrescarToken($refreshToken);
 
+        setcookie('access_token', $tokenDTO->getAccessToken(), [
+            'expires' => time() + 900,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+
+        $data = $tokenDTO->toArray();
+        $rol = strtolower($data['user']['nombre_rol'] ?? '');
+        $data['redirect'] = $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+
         http_response_code(200);
         echo json_encode([
             'status' => 'success',
-            'data' => $tokenDTO->toArray()
+            'data' => $data
         ], JSON_UNESCAPED_UNICODE);
     } catch(Exception $e){
         $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
@@ -123,6 +145,13 @@ function cerrar_sesion(): void{
         );
 
         $authService->cerrarSesion($accessToken, $refreshToken);
+
+        setcookie('access_token', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
 
         http_response_code(200);
         echo json_encode([

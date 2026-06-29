@@ -1,6 +1,12 @@
 <?php
 
 use Core\Http\Router;
+use Core\Middleware\AuthMiddleware;
+
+// ==================== MIDDLEWARE GLOBAL ====================
+Router::antes('ALL', '*', function(){
+    AuthMiddleware::procesar();
+});
 
 // ==================== CARGAR RUTAS POR MÓDULOS ====================
 foreach (glob(BASE_PATH . '/src/Modules/Rutas/*.php') as $rutaArchivo) {
