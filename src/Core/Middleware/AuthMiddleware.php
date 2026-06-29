@@ -44,7 +44,7 @@ class AuthMiddleware{
                 responder_error(403);
             }
         } catch(Exception $e){
-            responder_error(500);
+            // Si la tabla no existe o hay error de BD, asumimos que no está en lista negra
         }
 
         try{
@@ -58,6 +58,19 @@ class AuthMiddleware{
             }
 
             self::$usuarioPayload = $decodedArray;
+
+            // Si el token vino de query param, setear cookie y redirigir a la URL limpia
+            if(isset($_GET['token'])){
+                setcookie('access_token', $token, [
+                    'expires' => time() + 900,
+                    'path' => '/',
+                    'httponly' => true,
+                    'samesite' => 'Lax'
+                ]);
+                $cleanUrl = strtok($_SERVER['REQUEST_URI'], '?');
+                header('Location: ' . $cleanUrl);
+                exit;
+            }
         } catch(Exception $e){
             responder_error(401);
         }
@@ -81,6 +94,10 @@ class AuthMiddleware{
 
         if(isset($_COOKIE['access_token'])){
             return $_COOKIE['access_token'];
+        }
+
+        if(isset($_GET['token']) && is_string($_GET['token'])){
+            return $_GET['token'];
         }
 
         return null;

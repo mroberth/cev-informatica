@@ -9,6 +9,7 @@ class ManejadorErrorGlobal {
 
     public static function manejarExcepcion(Throwable $exception){
         ob_get_clean();
+        error_log("[CEV-ERROR] " . $exception->getMessage() . " en " . $exception->getFile() . ":" . $exception->getLine());
         $codigo = $exception->getCode();
         if ($codigo < 400 || $codigo >= 600) {
             $codigo = 500;

@@ -11,7 +11,14 @@ class RoleMiddleware{
             responder_error(401);
         }
 
-        $userRol = strtolower($payload['user']['rol'] ?? '');
+        $user = $payload['user'] ?? null;
+        $userRol = '';
+
+        if(is_object($user)){
+            $userRol = strtolower($user->rol ?? '');
+        } elseif(is_array($user)){
+            $userRol = strtolower($user['rol'] ?? '');
+        }
 
         if($userRol !== strtolower($rolRequerido)){
             responder_error(403);
