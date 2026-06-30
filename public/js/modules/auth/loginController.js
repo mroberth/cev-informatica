@@ -3,7 +3,8 @@ import { CevAlert } from '/js/utils/CevAlert.js'; // <-- Ruta absoluta desde la 
 
 const mensajesRedireccion = {
   no_auth: { title: 'Acceso denegado', text: 'Debes iniciar sesión primero para acceder a esta sección.' },
-  expired: { title: 'Sesión expirada', text: 'Tu sesión ha expirado. Inicia sesión nuevamente.' },
+  expired: { title: 'Sesión expirada', text: 'Tu sesión se cerró por inactividad. Inicia sesión nuevamente.' },
+  logout_success: { title: 'Sesión cerrada', text: 'Has cerrado sesión correctamente.' },
 };
 
 export function mostrarMotivoRedireccion(reason) {
@@ -14,6 +15,12 @@ export function mostrarMotivoRedireccion(reason) {
 }
 
 export const initLogin = () => {
+  const reason = sessionStorage.getItem('redirect_reason');
+  if (reason) {
+    mostrarMotivoRedireccion(reason);
+    sessionStorage.removeItem('redirect_reason');
+  }
+
   const form = document.getElementById('form-login');
   const btn = document.getElementById('btn-login'); // Traemos el botón para manejar el estado de carga (UX)
   if (!form) return;
@@ -123,7 +130,6 @@ export const initLogin = () => {
         // 4. Guardar la sesión JWT de forma local para las siguientes peticiones del cliente
         const user = response.data.user;
         localStorage.setItem('token', response.data.access_token);
-        localStorage.setItem('refresh_token', response.data.refresh_token);
         localStorage.setItem('user_rol', user.rol || user.nombre_rol);
         localStorage.setItem('user_nombre', user.nombre || '');
         localStorage.setItem('user_apellido', user.apellido || '');

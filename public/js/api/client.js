@@ -79,11 +79,6 @@ class ApiClient {
 
   async _refrescarToken() {
     this._refrescando = true;
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) {
-      this._refrescando = false;
-      return false;
-    }
 
     try {
       const urlRefresh = `${this.baseUrl}refresh`; 
@@ -92,7 +87,7 @@ class ApiClient {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ refresh_token: refreshToken }),
+        body: JSON.stringify({}),
       });
 
       if (!res.ok) {
@@ -105,9 +100,7 @@ class ApiClient {
 
       if (data.access_token) {
         localStorage.setItem('token', data.access_token);
-        if (data.refresh_token) {
-          localStorage.setItem('refresh_token', data.refresh_token);
-        }
+        window.dispatchEvent(new CustomEvent('cev:session-refreshed', { detail: data }));
         this._refrescando = false;
         return true;
       }

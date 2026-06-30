@@ -11,13 +11,18 @@ class RoleMiddleware{
             responder_error(401);
         }
 
-        $user = $payload['user'] ?? null;
+        $user = null;
+        if(is_array($payload)){
+            $user = $payload['user'] ?? null;
+        } elseif(is_object($payload)){
+            $user = $payload->user ?? null;
+        }
         $userRol = '';
 
         if(is_object($user)){
-            $userRol = strtolower($user->rol ?? '');
+            $userRol = strtolower($user->rol ?? $user->nombre_rol ?? '');
         } elseif(is_array($user)){
-            $userRol = strtolower($user['rol'] ?? '');
+            $userRol = strtolower($user['rol'] ?? $user['nombre_rol'] ?? '');
         }
 
         if($userRol !== strtolower($rolRequerido)){

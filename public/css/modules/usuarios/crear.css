@@ -1,0 +1,18 @@
+.form-control:focus,
+.form-select:focus {
+  border-color: #1a2a4a;
+  box-shadow: 0 0 0 0.2rem rgba(26, 42, 74, 0.15);
+}
+
+.input-group-text {
+  background: #f8f9fa;
+}
+
+.form-control,
+.form-select {
+  border-color: #dee2e6;
+}
+
+.btn:hover[style*="background: #1a2a4a"] {
+  filter: brightness(1.15);
+}

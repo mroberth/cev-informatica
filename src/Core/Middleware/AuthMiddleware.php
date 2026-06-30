@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Core\Middleware;
 
+use App\Auth\Repository\JwtBlacklistRepository;
+use App\Auth\Repository\LoginRepository;
+use App\Auth\Repository\RefreshTokenRepository;
+use App\Auth\Service\AuthService;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use App\Auth\Repository\JwtBlacklistRepository;
 use Exception;
 
 class AuthMiddleware{
@@ -27,13 +30,25 @@ class AuthMiddleware{
 
         $token = self::extraerToken();
 
-        if(!$token){
-            responder_error(401);
+        if($token !== null && self::validarToken($token)){
+            return;
         }
 
+        if(self::intentarRenovarConRefreshToken()){
+            return;
+        }
+
+        responder_error(401);
+    }
+
+    public static function getUsuarioPayload(): ?array{
+        return self::$usuarioPayload;
+    }
+
+    private static function validarToken(string $token): bool{
         $parts = explode('.', $token);
         if(count($parts) !== 3){
-            responder_error(401);
+            return false;
         }
 
         $firmaHash = hash('sha256', $parts[2]);
@@ -41,7 +56,7 @@ class AuthMiddleware{
         try{
             $blacklistRepo = new JwtBlacklistRepository();
             if($blacklistRepo->estaEnListaNegra($firmaHash)){
-                responder_error(403);
+                return false;
             }
         } catch(Exception $e){
             // Si la tabla no existe o hay error de BD, asumimos que no está en lista negra
@@ -54,30 +69,49 @@ class AuthMiddleware{
 
             $expectedIssuer = $_ENV['JWT_ISSUER'] ?? 'cev_informatica';
             if(($decodedArray['iss'] ?? '') !== $expectedIssuer){
-                responder_error(401);
+                return false;
             }
 
             self::$usuarioPayload = $decodedArray;
 
             // Si el token vino de query param, setear cookie y redirigir a la URL limpia
             if(isset($_GET['token'])){
-                setcookie('access_token', $token, [
-                    'expires' => time() + 900,
-                    'path' => '/',
-                    'httponly' => true,
-                    'samesite' => 'Lax'
-                ]);
+                self::guardarCookieAcceso($token);
                 $cleanUrl = strtok($_SERVER['REQUEST_URI'], '?');
                 header('Location: ' . $cleanUrl);
                 exit;
             }
+
+            return true;
         } catch(Exception $e){
-            responder_error(401);
+            return false;
         }
     }
 
-    public static function getUsuarioPayload(): ?array{
-        return self::$usuarioPayload;
+    private static function intentarRenovarConRefreshToken(): bool{
+        $refreshToken = $_COOKIE['refresh_token'] ?? '';
+        if($refreshToken === ''){
+            return false;
+        }
+
+        try{
+            $authService = new AuthService(
+                new LoginRepository(),
+                new RefreshTokenRepository(),
+                new JwtBlacklistRepository()
+            );
+
+            $tokenDTO = $authService->refrescarToken($refreshToken);
+            self::guardarCookiesSesion($tokenDTO->getAccessToken(), $tokenDTO->getRefreshToken());
+
+            $secret = $_ENV['JWT_SECRET'] ?? '';
+            $decoded = JWT::decode($tokenDTO->getAccessToken(), new Key($secret, 'HS256'));
+            self::$usuarioPayload = (array) $decoded;
+
+            return true;
+        } catch(Exception $e){
+            return false;
+        }
     }
 
     private static function extraerToken(): ?string{
@@ -101,5 +135,24 @@ class AuthMiddleware{
         }
 
         return null;
+    }
+
+    private static function guardarCookieAcceso(string $token): void{
+        setcookie('access_token', $token, [
+            'expires' => time() + 900,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    }
+
+    private static function guardarCookiesSesion(string $accessToken, string $refreshToken): void{
+        self::guardarCookieAcceso($accessToken);
+        setcookie('refresh_token', $refreshToken, [
+            'expires' => time() + 604800,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
     }
 }

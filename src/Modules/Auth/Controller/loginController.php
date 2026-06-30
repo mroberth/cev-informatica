@@ -34,12 +34,7 @@ function iniciar_sesion(): void{
 
         $tokenDTO = $authService->iniciarSesion($correo, $password);
 
-        setcookie('access_token', $tokenDTO->getAccessToken(), [
-            'expires' => time() + 900,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax'
-        ]);
+        establecerCookiesSesion($tokenDTO->getAccessToken(), $tokenDTO->getRefreshToken());
 
         $data = $tokenDTO->toArray();
         $rol = strtolower($data['user']['nombre_rol'] ?? '');
@@ -64,7 +59,7 @@ function refrescar_token(): void{
     header('Content-Type: application/json; charset=utf-8');
 
     $input = json_decode(file_get_contents('php://input'), true);
-    $refreshToken = $input['refresh_token'] ?? '';
+    $refreshToken = $input['refresh_token'] ?? ($_COOKIE['refresh_token'] ?? '');
 
     if(!$refreshToken){
         http_response_code(400);
@@ -84,12 +79,7 @@ function refrescar_token(): void{
 
         $tokenDTO = $authService->refrescarToken($refreshToken);
 
-        setcookie('access_token', $tokenDTO->getAccessToken(), [
-            'expires' => time() + 900,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax'
-        ]);
+        establecerCookiesSesion($tokenDTO->getAccessToken(), $tokenDTO->getRefreshToken());
 
         $data = $tokenDTO->toArray();
         $rol = strtolower($data['user']['nombre_rol'] ?? '');
@@ -114,7 +104,7 @@ function cerrar_sesion(): void{
     header('Content-Type: application/json; charset=utf-8');
 
     $input = json_decode(file_get_contents('php://input'), true);
-    $refreshToken = $input['refresh_token'] ?? '';
+    $refreshToken = $input['refresh_token'] ?? ($_COOKIE['refresh_token'] ?? '');
 
     $accessToken = '';
     $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '';
@@ -146,12 +136,7 @@ function cerrar_sesion(): void{
 
         $authService->cerrarSesion($accessToken, $refreshToken);
 
-        setcookie('access_token', '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax'
-        ]);
+        limpiarCookiesSesion();
 
         http_response_code(200);
         echo json_encode([
@@ -166,4 +151,36 @@ function cerrar_sesion(): void{
             'error' => $e->getMessage()
         ], JSON_UNESCAPED_UNICODE);
     }
+}
+
+function establecerCookiesSesion(string $accessToken, string $refreshToken): void{
+    setcookie('access_token', $accessToken, [
+        'expires' => time() + 900,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+
+    setcookie('refresh_token', $refreshToken, [
+        'expires' => time() + 604800,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+}
+
+function limpiarCookiesSesion(): void{
+    setcookie('access_token', '', [
+        'expires' => time() - 3600,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+
+    setcookie('refresh_token', '', [
+        'expires' => time() - 3600,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
 }

@@ -43,6 +43,32 @@ function mensaje_error_http(int $codigo): string{
     };
 }
 
+function url_inicio_error(): string{
+    if(class_exists('Core\\Middleware\\AuthMiddleware')){
+        $payload = \Core\Middleware\AuthMiddleware::getUsuarioPayload();
+        if(!empty($payload)){
+            $user = null;
+            if(is_array($payload)){
+                $user = $payload['user'] ?? null;
+            } elseif(is_object($payload)){
+                $user = $payload->user ?? null;
+            }
+
+            if(is_array($user)){
+                $rol = strtolower($user['rol'] ?? $user['nombre_rol'] ?? '');
+            } elseif(is_object($user)){
+                $rol = strtolower($user->rol ?? $user->nombre_rol ?? '');
+            } else{
+                $rol = '';
+            }
+
+            return $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+        }
+    }
+
+    return '/';
+}
+
 function responder_error(int $codigo): void{
     http_response_code($codigo);
     $mensaje = mensaje_error_http($codigo);

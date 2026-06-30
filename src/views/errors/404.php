@@ -1,4 +1,5 @@
 <?php require_once BASE_PATH . '/src/views/layouts/head.php'; ?>
+<?php $inicioUrl = function_exists('url_inicio_error') ? url_inicio_error() : '/'; ?>
 <body class="bg-white">
   <div class="d-flex align-items-center justify-content-center min-vh-100 bg-white">
     <div class="text-center p-4">
@@ -16,7 +17,7 @@
       </p>
 
       <div class="d-flex justify-content-center gap-2">
-        <a href="/" class="btn btn-primary fw-bold px-4">
+        <a href="<?= $inicioUrl ?>" class="btn btn-primary fw-bold px-4">
           <i class="bi bi-house-door me-1"></i> Ir al Inicio
         </a>
         <button onclick="window.history.back()" class="btn btn-outline-secondary fw-bold px-4">

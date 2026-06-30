@@ -98,6 +98,20 @@ class Router {
     }
 
     private static function coincidePatron($patron, $ruta){
+        if($patron === '*'){
+            return true;
+        }
+
+        if(str_ends_with($patron, '/*')){
+            $prefijo = rtrim(substr($patron, 0, -2), '/');
+
+            if($ruta === $prefijo){
+                return true;
+            }
+
+            return str_starts_with($ruta, $prefijo . '/');
+        }
+
         //Convertir el patron en una expresión regular
         $expresion = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_-]+)', $patron);
         $expresion = str_replace('/', '\/', $expresion);

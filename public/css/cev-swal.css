@@ -1,0 +1,162 @@
+:root {
+    --cev-primary: #0d6efd;
+    --cev-success: #198754;
+    --cev-danger: #dc3545;
+    --cev-warning: #ffc107;
+    --cev-info: #0dcaf0;
+    --cev-dark: #1a1a2e;
+}
+
+/* ─── POPUP ─── */
+.swal2-popup.cev-swal-popup {
+    border-radius: 1.25rem;
+    padding: 1.75rem 1.5rem 1.25rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+}
+
+.swal2-popup.cev-swal-popup .swal2-title {
+    color: var(--cev-dark);
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.swal2-popup.cev-swal-popup .swal2-html-container {
+    color: #5a5a7a;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0.5rem 0 0;
+}
+
+/* ─── ICONS ─── */
+.swal2-popup.cev-swal-popup .swal2-icon {
+    border-width: 3px;
+    margin: 0.5em auto 1em;
+}
+
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-success {
+    border-color: var(--cev-success);
+    color: var(--cev-success);
+}
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-success .swal2-success-ring {
+    border-color: rgba(25, 135, 84, 0.25);
+}
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-success [class^=swal2-success-line] {
+    background-color: var(--cev-success);
+}
+
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-error {
+    border-color: var(--cev-danger);
+    color: var(--cev-danger);
+}
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-error [class^=swal2-x-mark-line] {
+    background-color: var(--cev-danger);
+}
+
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-warning {
+    border-color: var(--cev-warning);
+    color: #856404;
+}
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-info {
+    border-color: var(--cev-info);
+    color: #055160;
+}
+.swal2-popup.cev-swal-popup .swal2-icon.swal2-question {
+    border-color: var(--cev-primary);
+    color: var(--cev-primary);
+}
+
+/* ─── BUTTONS ─── */
+.swal2-popup.cev-swal-popup .swal2-actions {
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-confirm {
+    font-weight: 600;
+    padding: 0.6rem 1.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-confirm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-confirm:active {
+    transform: translateY(0);
+}
+
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-cancel {
+    font-weight: 600;
+    padding: 0.6rem 1.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-cancel:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.swal2-popup.cev-swal-popup .swal2-styled.swal2-cancel:active {
+    transform: translateY(0);
+}
+
+/* ─── TIMER PROGRESS BAR ─── */
+.swal2-popup.cev-swal-popup .swal2-timer-progress-bar {
+    background: linear-gradient(90deg, var(--cev-primary), #6ea8fe);
+    height: 4px;
+}
+
+/* ─── BACKDROP ─── */
+.swal2-container.cev-backdrop {
+    background: transparent;
+}
+.swal2-container.cev-backdrop.swal2-backdrop-show {
+    background: rgba(13, 110, 253, 0.2) !important;
+}
+
+/* ─── ANIMACIONES ─── */
+@keyframes cev-popup-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(-10px);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.02) translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes cev-popup-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+.swal2-popup.cev-swal-popup.swal2-show {
+    animation: cev-popup-in 0.35s ease-out !important;
+}
+.swal2-popup.cev-swal-popup.swal2-hide {
+    animation: cev-popup-out 0.2s ease-in !important;
+}
+
+@keyframes cev-backdrop-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes cev-backdrop-out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}

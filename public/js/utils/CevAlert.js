@@ -25,6 +25,7 @@ export class CevAlert {
         };
         base.customClass = {
             popup: 'cev-swal-popup',
+            container: 'cev-backdrop',
             ...(base.customClass || {}),
         };
         return base;

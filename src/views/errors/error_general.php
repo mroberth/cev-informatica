@@ -2,6 +2,8 @@
 $titulo = $titulo ?? 'Error';
 $mensaje = $mensaje ?? 'Ha ocurrido un error inesperado.';
 $codigoHttp = $codigoHttp ?? 500;
+$inicioUrl = function_exists('url_inicio_error') ? url_inicio_error() : '/';
+$inicioTexto = $inicioUrl === '/' ? 'Volver al inicio' : 'Volver al dashboard';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -23,12 +25,14 @@ $codigoHttp = $codigoHttp ?? 500;
                     <h1 class="fw-bold text-dark mb-3"><?= $codigoHttp ?></h1>
                     <h5 class="text-muted mb-3"><?= $titulo ?></h5>
                     <p class="text-secondary mb-4"><?= htmlspecialchars($mensaje) ?></p>
-                    <a href="/" class="btn btn-primary">
-                        <i class="bi bi-house me-1"></i>Volver al inicio
+                    <a href="<?= $inicioUrl ?>" class="btn btn-primary">
+                        <i class="bi bi-house me-1"></i><?= $inicioTexto ?>
                     </a>
+                    <?php if ($inicioUrl === '/'): ?>
                     <a href="/login" class="btn btn-outline-secondary ms-2">
                         <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar sesión
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
