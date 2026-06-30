@@ -25,69 +25,27 @@ function clearError(field) {
 }
 
 function validarNombre(field) {
-  if (field.value.trim() === '') {
-    setError(field, 'El nombre es obligatorio.');
-    return false;
-  }
-
-  if (field.value.trim().length < 2) {
-    setError(field, 'El nombre debe tener al menos 2 caracteres.');
-    return false;
-  }
-
-  clearError(field);
-  return true;
+  return validarCampoRequerido(field, 'El nombre es obligatorio.');
 }
 
 function validarApellido(field) {
-  if (field.value.trim() === '') {
-    setError(field, 'El apellido es obligatorio.');
-    return false;
-  }
-
-  if (field.value.trim().length < 2) {
-    setError(field, 'El apellido debe tener al menos 2 caracteres.');
-    return false;
-  }
-
-  clearError(field);
-  return true;
+  return validarCampoRequerido(field, 'El apellido es obligatorio.');
 }
 
 function validarCorreo(field) {
-  const regex = /^[a-zA-Z0-9._%+-]+@(hotmail|yahoo|gmail|outlook)\.(com|es|net|org)$/i;
-
-  if (field.value.trim() === '') {
-    setError(field, 'El correo es obligatorio.');
-    return false;
-  }
-
-  if (!regex.test(field.value.trim())) {
-    setError(field, 'El correo ingresado es inválido.');
-    return false;
-  }
-
-  clearError(field);
-  return true;
+  return validarCampoRequerido(field, 'El correo es obligatorio.');
 }
 
 function validarPassword(field) {
-  if (field.value === '') {
-    setError(field, 'La contraseña es obligatoria.');
-    return false;
-  }
-
-  if (field.value.length < 5) {
-    setError(field, 'La contraseña debe tener al menos 5 caracteres.');
-    return false;
-  }
-
-  clearError(field);
-  return true;
+  return validarCampoRequerido(field, 'La contraseña es obligatoria.');
 }
 
 function validarSelect(field, mensaje) {
-  if (field.value === '') {
+  return validarCampoRequerido(field, mensaje);
+}
+
+function validarCampoRequerido(field, mensaje) {
+  if (field.value.trim() === '') {
     setError(field, mensaje);
     return false;
   }
