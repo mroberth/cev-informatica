@@ -2,60 +2,14 @@ import { initAdminShell } from '/js/modules/admin/common.js';
 import { apiClient } from '/js/api/client.js';
 import { CevAlert } from '/js/utils/CevAlert.js';
 
-function obtenerElementoForm() {
-  return document.getElementById('formCrearUsuario');
-}
+export const initCrearUsuarios = () => {
+  initAdminShell();
+  const form = document.getElementById('formCrearUsuario');
+  if(!form) return;
 
-function setError(field, message) {
-  const errorElement = document.getElementById(`${field.id}Error`);
-  if (errorElement) {
-    errorElement.textContent = message;
-  }
-  field.classList.add('is-invalid');
-  field.classList.remove('is-valid');
-}
+  obtenerRoles();
 
-function clearError(field) {
-  const errorElement = document.getElementById(`${field.id}Error`);
-  if (errorElement) {
-    errorElement.textContent = '';
-  }
-  field.classList.remove('is-invalid');
-  field.classList.add('is-valid');
-}
-
-function validarNombre(field) {
-  return validarCampoRequerido(field, 'El nombre es obligatorio.');
-}
-
-function validarApellido(field) {
-  return validarCampoRequerido(field, 'El apellido es obligatorio.');
-}
-
-function validarCorreo(field) {
-  return validarCampoRequerido(field, 'El correo es obligatorio.');
-}
-
-function validarPassword(field) {
-  return validarCampoRequerido(field, 'La contraseña es obligatoria.');
-}
-
-function validarSelect(field, mensaje) {
-  return validarCampoRequerido(field, mensaje);
-}
-
-function validarCampoRequerido(field, mensaje) {
-  if (field.value.trim() === '') {
-    setError(field, mensaje);
-    return false;
-  }
-
-  clearError(field);
-  return true;
-}
-
-function inicializarValidaciones(form) {
-  const campos = {
+  const elements = {
     nombre: form.nombre,
     apellido: form.apellido,
     correo: form.correo,
@@ -64,95 +18,255 @@ function inicializarValidaciones(form) {
     estado: form.estado,
   };
 
-  campos.nombre.addEventListener('input', () => validarNombre(campos.nombre));
-  campos.apellido.addEventListener('input', () => validarApellido(campos.apellido));
-  campos.correo.addEventListener('input', () => validarCorreo(campos.correo));
-  campos.password.addEventListener('input', () => validarPassword(campos.password));
-  campos.rol_id.addEventListener('change', () => validarSelect(campos.rol_id, 'Selecciona un rol.'));
-  campos.estado.addEventListener('change', () => validarSelect(campos.estado, 'Selecciona un estado.'));
-
-  return campos;
-}
-
-async function enviarFormulario(form, campos) {
-  const endpointGuardado = window.CEV_USUARIOS_GUARDAR_ENDPOINT || '';
-
-  const payload = {
-    nombre: campos.nombre.value.trim(),
-    apellido: campos.apellido.value.trim(),
-    correo: campos.correo.value.trim(),
-    password: campos.password.value,
-    rol_id: campos.rol_id.value,
-    estado: campos.estado.value,
+  const showError = (field, msg) => {
+    const errorElement = document.getElementById(`${field.id}Error`);
+    if (errorElement) errorElement.textContent = msg;
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
   };
 
-  if (!endpointGuardado) {
-    CevAlert.info({
-      title: 'Formulario listo',
-      text: 'Las validaciones están activas. Falta conectar el endpoint backend para guardar usuarios.',
-      confirmButtonText: 'Entendido',
+  const clearError = (field) => {
+    const errorElement = document.getElementById(`${field.id}Error`);
+    if (errorElement) errorElement.textContent = '';
+    field.classList.remove('is-invalid');
+    field.classList.add('is-valid');
+  };
+
+  const togglePasswordVisibility = () => {
+    const toggleButton = document.getElementById('togglePassword');
+    const toggleIcon = document.getElementById('togglePasswordIcon');
+    if (!toggleButton || !toggleIcon) return;
+
+    toggleButton.addEventListener('click', () => {
+      const currentType = elements.password.type;
+      const nextType = currentType === 'password' ? 'text' : 'password';
+      elements.password.type = nextType;
+      toggleIcon.classList.toggle('bi-eye', nextType === 'text');
+      toggleIcon.classList.toggle('bi-eye-slash', nextType === 'password');
     });
-    console.info('Payload de crear usuario listo para enviar:', payload);
-    return;
-  }
+  };
 
-  const response = await apiClient.post(endpointGuardado, payload);
-  const mensaje = response?.data?.message || 'Usuario creado correctamente.';
+  function validarNombre(){
+    const nombre = elements.nombre.value;
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
 
-  CevAlert.success({
-    title: 'Guardado',
-    text: mensaje,
-  });
-
-  form.reset();
-  Object.values(campos).forEach((campo) => {
-    campo.classList.remove('is-valid', 'is-invalid');
-  });
-}
-
-function inicializarFormularioCrearUsuarios() {
-  initAdminShell();
-
-  const form = obtenerElementoForm();
-  if (!form) {
-    return;
-  }
-
-  const campos = inicializarValidaciones(form);
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const esValido = [
-      validarNombre(campos.nombre),
-      validarApellido(campos.apellido),
-      validarCorreo(campos.correo),
-      validarPassword(campos.password),
-      validarSelect(campos.rol_id, 'Selecciona un rol.'),
-      validarSelect(campos.estado, 'Selecciona un estado.'),
-    ].every(Boolean);
-
-    if (!esValido) {
-      CevAlert.warning({
-        title: 'Formulario incompleto',
-        text: 'Corrige los campos resaltados antes de continuar.',
-      });
-      return;
+    if(nombre.trim() === ''){
+      showError(elements.nombre, "El nombre es obligatorio.");
+      return false;
     }
 
+    if(nombre.length > 20){
+      showError(elements.nombre, "El nombre ingresado excede los límites de longitud.");
+      return false;
+    }
+
+    if(!regex.test(nombre)){
+      showError(elements.nombre, "El nombre ingresado es inválido.");
+      return false;
+    }
+
+    if(nombre.length < 3){
+      showError(elements.nombre, "El nombre ingresado es demasiado corto.");
+      return false;
+    }
+
+    clearError(elements.nombre);
+    return true;
+  }
+
+  function validarApellido(){
+    const apellido = elements.apellido.value;
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+
+    if(apellido.trim() === ''){
+      showError(elements.apellido, "El apellido es obligatorio.");
+      return false;
+    }
+
+    if(apellido.length > 20){
+      showError(elements.apellido, "El apellido ingresado excede los límites de longitud.");
+      return false;
+    }
+
+    if(!regex.test(apellido)){
+      showError(elements.apellido, "El apellido ingresado es inválido.");
+      return false;
+    }
+
+    if(apellido.length < 3){
+      showError(elements.apellido, "El apellido ingresado es demasiado corto.");
+      return false;
+    }
+
+    clearError(elements.apellido);
+    return true;
+  }
+
+  async function validarCorreo(){
+    const correo = elements.correo.value;
+    const regex = /^[a-zA-Z0-9._%+-]+@(hotmail|yahoo|gmail|outlook)\.(com|es|net|org)$/i;
+
+    if(correo.trim() === ''){
+      showError(elements.correo, "El correo es obligatorio.");
+      return false;
+    }
+
+    if(correo.length > 30){
+      showError(elements.correo, "El correo ingresado excede los límites de longitud.");
+      return false;
+    }
+
+    if(!regex.test(correo)){
+      showError(elements.correo, "El correo ingresado es inválido.");
+      return false;
+    }
+
+    //Validacion en tiempo real en la base de datos
     try {
-      await enviarFormulario(form, campos);
+      const response = await apiClient.get('a/usuarios/verificar_correo?correo=' + encodeURIComponent(correo));
+      if (response.existe) {
+        showError(elements.correo, "El correo ingresado ya se encuentra registrado.");
+        return false;
+      }
     } catch (error) {
+      console.error('Error al verificar el correo:', error);
+    }
+
+    clearError(elements.correo);
+    return true;
+  }
+
+  function validarPassword() {
+    const password = elements.password.value;
+    const regex = /^(?=.*[#$%&.]).{8,}$/;
+
+    if (password === '') {
+        showError(elements.password, "La contraseña es obligatoria.");
+        return false;
+    }
+
+    if (!regex.test(password)) {
+        showError(elements.password, "La contraseña debe tener mínimo 8 caracteres y al menos un símbolo (#, $, %, &, .).");
+        return false;
+    }
+
+    clearError(elements.password);
+    return true;
+  }
+
+  function validarRol(){
+    const idRol = elements.rol_id.value;
+
+    if(idRol === ''){
+      showError(elements.rol_id, "El rol del Usuario es obligatorio.");
+      return false;
+    }
+
+    clearError(elements.rol_id);
+    return true;
+  }
+
+  function validarEstado(){
+    const estado = elements.estado.value;
+
+    if(estado === ''){
+      showError(elements.estado, "El estado del Usuario es obligatorio.");
+      return false;
+    }
+
+    clearError(elements.estado);
+    return true;
+  }
+
+  elements.nombre.addEventListener('input', validarNombre);
+  elements.apellido.addEventListener('input', validarApellido);
+  elements.correo.addEventListener('blur', validarCorreo);
+  elements.password.addEventListener('input', validarPassword);
+  elements.rol_id.addEventListener('input', validarRol);
+  elements.estado.addEventListener('input', validarEstado);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const validaciones = [
+      validarNombre(),
+      validarApellido(),
+      await validarCorreo(),
+      validarPassword(),
+      validarRol(),
+      validarEstado()
+    ];
+
+    if(validaciones.every(v => v === true)){
+      const btnSubmit = form.querySelector('[type="submit"]') || document.getElementById('btn-guardar');
+      const originalBtnText = btnSubmit.innerHTML;
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Guardando...`;
+
+      try{
+        const payload = {
+          nombre: form.elements.nombre.value.trim(),
+          apellido: form.elements.apellido.value.trim(),
+          correo: form.elements.correo.value.trim(),
+          password: form.elements.password.value,
+          rol_id: parseInt(form.elements.rol_id.value),
+          estado: form.elements.estado.value
+        };
+
+        const response = await apiClient.post('a/usuarios/registrar_usuarios', payload);
+
+        CevAlert.success({
+          title: "Registro Exitoso",
+          text: "El usuario ha sido registrado exitosamente.",
+          confirmButtonText: "Aceptar"
+        });
+        form.reset();
+        form.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+      } catch(error){
+        CevAlert.error({
+          title: "Error al guardar",
+          text: error.message || "Ocurrió un error inesperado al intentar guardar el usuario.",
+          confirmButtonText: "Aceptar"
+        });
+      } finally{
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = originalBtnText;
+      }
+
+    } else{
       CevAlert.error({
-        title: 'Error al guardar',
-        text: error.message || 'No fue posible guardar el usuario.',
+        title: "Error de Validación",
+        text: "Por favor, corrija los errores en el formulario antes de enviarlo.",
+        confirmButtonText: "Aceptar"
       });
     }
   });
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', inicializarFormularioCrearUsuarios);
+  document.addEventListener('DOMContentLoaded', initCrearUsuarios);
 } else {
-  inicializarFormularioCrearUsuarios();
+  initCrearUsuarios();
+}
+
+async function obtenerRoles() {
+  const select = document.getElementById('rol_id');
+  if (!select) return;
+
+  try {
+    const response = await apiClient.get('a/usuarios/obtener_roles');
+    const roles = response.data || response;
+
+    select.innerHTML = '<option value="">Seleccionar rol</option>';
+
+    roles.forEach(rol => {
+      const option = document.createElement('option');
+      option.value = rol.id || rol.rol_id;
+      option.textContent = rol.nombre_rol || rol.rol;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error al cargar roles:', error);
+  }
 }

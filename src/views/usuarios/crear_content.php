@@ -21,8 +21,8 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-person"></i></span>
                   <input type="text" class="form-control border-start-0 ps-0" id="nombre" name="nombre" placeholder="Nombre">
+                  <div class="invalid-feedback" id="nombreError"></div>                
                 </div>
-                <div class="invalid-feedback" id="nombreError"></div>
               </div>
 
               <div class="col-md-6 mb-2">
@@ -32,8 +32,8 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-person"></i></span>
                   <input type="text" class="form-control border-start-0 ps-0" id="apellido" name="apellido" placeholder="Apellido">
+                  <div class="invalid-feedback" id="apellidoError"></div>
                 </div>
-                <div class="invalid-feedback" id="apellidoError"></div>
               </div>
 
               <div class="col-md-6 mb-2">
@@ -43,8 +43,8 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-envelope"></i></span>
                   <input type="email" class="form-control border-start-0 ps-0" id="correo" name="correo" placeholder="correo@ejemplo.com">
+                  <div class="invalid-feedback" id="correoError"></div>
                 </div>
-                <div class="invalid-feedback" id="correoError"></div>
               </div>
 
               <div class="col-md-6 mb-2">
@@ -54,8 +54,8 @@
                 <div class="input-group has-validation">
                   <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-lock"></i></span>
                   <input type="password" class="form-control border-start-0 ps-0" id="password" name="password" placeholder="Contraseña">
+                  <div class="invalid-feedback" id="passwordError"></div>
                 </div>
-                <div class="invalid-feedback" id="passwordError"></div>
               </div>
 
               <div class="col-md-6 mb-2">
@@ -67,8 +67,8 @@
                   <select class="form-select border-start-0 ps-0" id="rol_id" name="rol_id">
                     <option value="">Seleccionar rol</option>
                   </select>
+                  <div class="invalid-feedback" id="rol_idError"></div>
                 </div>
-                <div class="invalid-feedback" id="rol_idError"></div>
               </div>
 
               <div class="col-md-6 mb-2">
@@ -82,8 +82,8 @@
                     <option value="activo">Activo</option>
                     <option value="inactivo">Inactivo</option>
                   </select>
+                  <div class="invalid-feedback" id="estadoError"></div>
                 </div>
-                <div class="invalid-feedback" id="estadoError"></div>
               </div>
 
             </div>
@@ -91,7 +91,7 @@
             <hr class="my-4">
 
             <div class="d-flex gap-2">
-              <button type="submit" class="btn text-white fw-semibold px-4" style="background: #1a2a4a;">
+              <button type="submit" id="btn-guardar" class="btn text-white fw-semibold px-4" style="background: #1a2a4a;">
                 <i class="bi bi-check-lg me-1"></i>Guardar
               </button>
               <a href="/a/usuarios/consultar" class="btn btn-outline-secondary fw-semibold px-4">

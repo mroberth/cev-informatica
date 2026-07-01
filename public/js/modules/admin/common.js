@@ -25,7 +25,7 @@ function obtenerDatosToken() {
 function mostrarDatosUsuario() {
   const datosToken = obtenerDatosToken();
   if (!datosToken) {
-    window.location.href = '/login';
+    limpiarSesionLocalYRedirigir('no_auth');
     return;
   }
 
@@ -62,9 +62,12 @@ function limpiarTemporizadorRenovacion() {
   }
 }
 
-function limpiarSesionLocalYRedirigir() {
+function limpiarSesionLocalYRedirigir(reason = 'expired') {
   limpiarTemporizadorRenovacion();
   localStorage.clear();
+  if (reason) {
+    sessionStorage.setItem('redirect_reason', reason);
+  }
   window.location.href = '/login';
 }
 
@@ -101,7 +104,7 @@ async function mostrarAvisoRenovacionSesion() {
       programarAvisoRenovacionSesion();
       return;
     } catch {
-      limpiarSesionLocalYRedirigir();
+      limpiarSesionLocalYRedirigir('expired');
       return;
     }
   }
@@ -120,12 +123,12 @@ async function mostrarAvisoRenovacionSesion() {
       programarAvisoRenovacionSesion();
       return;
     } catch {
-      limpiarSesionLocalYRedirigir();
+      limpiarSesionLocalYRedirigir('expired');
       return;
     }
   }
 
-  limpiarSesionLocalYRedirigir();
+  limpiarSesionLocalYRedirigir('expired');
 }
 
 function programarAvisoRenovacionSesion() {
@@ -194,8 +197,7 @@ function inicializarCerrarSesion() {
       // Se limpia la sesión local aunque falle la petición de cierre.
     }
 
-    sessionStorage.setItem('redirect_reason', 'logout_success');
-    limpiarSesionLocalYRedirigir();
+    limpiarSesionLocalYRedirigir('logout_success');
   });
 }
 
