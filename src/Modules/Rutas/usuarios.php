@@ -6,6 +6,11 @@ Router::get('a/usuarios/crear', function(){
 	crear_usuarios();
 });
 
+Router::get('a/usuarios/consultar', function(){
+	cargar_controlador('Usuarios', 'usuariosController.php');
+	consultar_usuarios();
+});
+
 Router::get('a/usuarios/obtener_roles', function(){
 	cargar_controlador('Usuarios','usuariosController.php');
 	obtener_roles();
@@ -19,4 +24,9 @@ Router::get('a/usuarios/verificar_correo', function(){
 Router::post('a/usuarios/registrar_usuarios', function(){
 	cargar_controlador('Usuarios','usuariosController.php');
 	registrar_usuarios();
+});
+
+Router::get('a/usuarios/consultar_usuarios', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	consultar_usuarios_data();
 });

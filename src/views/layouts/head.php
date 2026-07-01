@@ -15,4 +15,5 @@
     <?php endif; ?>
     <script src="/plugins/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/plugins/sweetalert2/sweetalert.js"></script>
+    <script src="/plugins/datatables/"></script>
 </head>

@@ -42,4 +42,13 @@ class UsuariosRepository {
         return (int) $this->conexion->lastInsertId();
     }
 
+    public function consultar_usuarios(): array {
+        $query = "SELECT u.id, u.nombre, u.apellido, u.correo, r.nombre_rol AS rol, u.estado
+                  FROM usuarios u
+                  JOIN roles r ON u.rol_id = r.id";
+        $stmt = $this->conexion->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

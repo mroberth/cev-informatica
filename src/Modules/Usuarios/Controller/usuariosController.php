@@ -8,6 +8,10 @@ function crear_usuarios(): void {
     require_once BASE_PATH . '/src/views/usuarios/crear_usuarios.php';
 }
 
+function consultar_usuarios(): void {
+    require_once BASE_PATH . '/src/views/usuarios/consultar_usuarios.php';
+}
+
 function obtener_roles(): void {
     header('Content-Type: application/json; charset=utf-8');
 
@@ -84,4 +88,14 @@ function registrar_usuarios() : void {
             'error' => $e->getMessage()
         ], JSON_UNESCAPED_UNICODE);
     }
+}
+
+function consultar_usuarios_data(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $repositorio = new UsuariosRepository();
+    $usuarios = $repositorio->consultar_usuarios();
+
+    echo json_encode(['data' => $usuarios]);
+    exit;
 }
