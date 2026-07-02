@@ -18,6 +18,14 @@ $menusSidebar = [
         'grupo' => 'Gestión Académica',
         'items' => [
             [
+                'id'=> 'Dashboard',
+                'titulo' => 'Dashboard',
+                'icono' => 'bi-house',
+                'base' => '/a/dashboard',
+                'url' => '/a/dashboard',
+                'items' => [],
+            ],
+            [
                 'id' => 'subInscripciones',
                 'titulo' => 'Inscripciones',
                 'icono' => 'bi-journal-plus',
@@ -133,7 +141,11 @@ $menusSidebar = [
                     }
                     ?>
                     <div class="nav-item <?= !empty($menu['placeholder']) ? 'nav-item-placeholder' : '' ?>">
-                        <?php if (!empty($menu['placeholder']) && empty($menu['items'])): ?>
+                        <?php if (!empty($menu['url']) && empty($menu['items'])): ?>
+                            <a class="nav-link nav-link-static <?= $menuActivo ? 'active' : '' ?>" href="<?= $menu['url'] ?>">
+                                <i class="bi <?= $menu['icono'] ?>"></i><?= $menu['titulo'] ?>
+                            </a>
+                        <?php elseif (!empty($menu['placeholder']) && empty($menu['items'])): ?>
                             <div class="nav-link nav-link-static <?= $menuActivo ? 'active' : '' ?>">
                                 <i class="bi <?= $menu['icono'] ?>"></i><?= $menu['titulo'] ?>
                             </div>
