@@ -17,7 +17,7 @@ class LoginRepository{
         $sql = "SELECT u.id, u.correo, u.nombre, u.apellido, u.password_hash, u.estado, r.nombre_rol
                 FROM usuarios u
                 JOIN roles r ON u.rol_id = r.id
-                WHERE u.correo = :correo AND u.estado = 'activo'
+                WHERE u.correo = :correo
                 LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':correo' => $correo]);
@@ -42,7 +42,7 @@ class LoginRepository{
         $sql = "SELECT u.id, u.correo, u.nombre, u.apellido, u.password_hash, u.estado, r.nombre_rol
                 FROM usuarios u
                 JOIN roles r ON u.rol_id = r.id
-                WHERE u.id = :id AND u.estado = 'activo'
+                WHERE u.id = :id
                 LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);

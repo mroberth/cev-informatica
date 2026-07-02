@@ -34,6 +34,13 @@ function iniciar_sesion(): void{
 
         $tokenDTO = $authService->iniciarSesion($correo, $password);
 
+        $usuarioBitacora = $tokenDTO->getUsuario();
+        registrar_en_bitacora(
+            'LOGIN_EXITOSO',
+            "Inicio de sesión exitoso: {$usuarioBitacora->getCorreo()}",
+            $usuarioBitacora->getID()
+        );
+
         establecerCookiesSesion($tokenDTO->getAccessToken(), $tokenDTO->getRefreshToken());
 
         $data = $tokenDTO->toArray();
@@ -47,6 +54,14 @@ function iniciar_sesion(): void{
         ], JSON_UNESCAPED_UNICODE);
     } catch(Exception $e){
         $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+
+        if ($code === 401 || $code === 403) {
+            registrar_en_bitacora(
+                'LOGIN_FALLIDO',
+                "Intento fallido: {$correo} - {$e->getMessage()}"
+            );
+        }
+
         http_response_code($code);
         echo json_encode([
             'status' => 'error',
@@ -78,6 +93,13 @@ function refrescar_token(): void{
         );
 
         $tokenDTO = $authService->refrescarToken($refreshToken);
+
+        $usuarioBitacora = $tokenDTO->getUsuario();
+        registrar_en_bitacora(
+            'REFRESH_TOKEN',
+            "Token renovado para: {$usuarioBitacora->getCorreo()}",
+            $usuarioBitacora->getID()
+        );
 
         establecerCookiesSesion($tokenDTO->getAccessToken(), $tokenDTO->getRefreshToken());
 
@@ -118,6 +140,16 @@ function cerrar_sesion(): void{
         $accessToken = $_COOKIE['access_token'];
     }
 
+    $idUsuarioLogout = null;
+    $correoLogout = '';
+    $partsToken = explode('.', $accessToken);
+    if (count($partsToken) === 3) {
+        $payloadJson = base64_decode(str_replace(['-', '_'], ['+', '/'], $partsToken[1]));
+        $payload = json_decode($payloadJson, true);
+        $idUsuarioLogout = isset($payload['sub']) ? (int) $payload['sub'] : null;
+        $correoLogout = $payload['user']['correo'] ?? '';
+    }
+
     if(!$refreshToken){
         http_response_code(400);
         echo json_encode([
@@ -137,6 +169,12 @@ function cerrar_sesion(): void{
         $authService->cerrarSesion($accessToken, $refreshToken);
 
         limpiarCookiesSesion();
+
+        registrar_en_bitacora(
+            'LOGOUT',
+            "Cierre de sesión: {$correoLogout}",
+            $idUsuarioLogout
+        );
 
         http_response_code(200);
         echo json_encode([

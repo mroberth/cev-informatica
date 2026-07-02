@@ -90,8 +90,9 @@ $menusSidebar = [
                 'titulo' => 'Auditoría y Bitácora',
                 'icono' => 'bi-journal-check',
                 'base' => '/a/bitacora',
-                'items' => [],
-                'placeholder' => true,
+                'items' => [
+                    ['href' => '/a/bitacora', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
             ],
         ],
     ],

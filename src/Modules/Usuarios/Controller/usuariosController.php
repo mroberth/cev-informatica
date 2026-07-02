@@ -71,6 +71,11 @@ function registrar_usuarios() : void {
         $usuarioValidado = $service->validarUsuario($usuarioDTO);
         $idInsertado = $repositorio->registrar_usuario($usuarioValidado);
 
+        registrar_en_bitacora(
+            'CREAR',
+            "Usuario creado: {$usuarioValidado->getCorreo()} (ID: {$idInsertado})"
+        );
+
         http_response_code(201);
         echo json_encode([
             'status' => 'success',
@@ -162,6 +167,11 @@ function actualizar_usuario(): void {
         $actualizado = $repositorio->actualizar_usuario($usuarioValidado, $password);
 
         if ($actualizado) {
+            registrar_en_bitacora(
+                'ACTUALIZAR',
+                "Usuario actualizado: {$usuarioValidado->getCorreo()} (ID: {$id})"
+            );
+
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Usuario actualizado correctamente.'
@@ -220,6 +230,13 @@ function cambiar_estado(): void {
         $resultado = $repositorio->cambiar_estado($id, $estado);
 
         if ($resultado) {
+            $accionBitacora = $estado === 'activo' ? 'ACTIVAR' : 'DESACTIVAR';
+            $nombreCompleto = trim(($usuario['nombre'] ?? '') . ' ' . ($usuario['apellido'] ?? ''));
+            $descripcion = $estado === 'activo'
+                ? "Usuario activado: {$nombreCompleto} (ID: {$id})"
+                : "Usuario desactivado: {$nombreCompleto} (ID: {$id})";
+            registrar_en_bitacora($accionBitacora, $descripcion);
+
             $accion = $estado === 'activo' ? 'activado' : 'desactivado';
             echo json_encode([
                 'status' => 'success',

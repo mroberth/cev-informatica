@@ -103,3 +103,48 @@ function responder_error(int $codigo): void{
     require_once BASE_PATH . '/src/views/errors/error_general.php';
     exit;
 }
+
+function registrar_en_bitacora(
+    string $accion,
+    string $descripcion,
+    ?int $idUsuario = null,
+    ?string $direccionIp = null,
+    ?string $userAgent = null
+): void {
+    try {
+        if (!class_exists('App\\Bitacora\\Service\\BitacoraService')) {
+            require_once BASE_PATH . '/src/Modules/Bitacora/Service/BitacoraService.php';
+        }
+        if (!class_exists('App\\Bitacora\\Repository\\BitacoraRepository')) {
+            require_once BASE_PATH . '/src/Modules/Bitacora/Repository/BitacoraRepository.php';
+        }
+
+        if ($idUsuario === null) {
+            $payload = class_exists('Core\\Middleware\\AuthMiddleware')
+                ? \Core\Middleware\AuthMiddleware::getUsuarioPayload()
+                : null;
+
+            if ($payload) {
+                $idUsuario = (int) ($payload['sub'] ?? 0);
+                if ($idUsuario <= 0) $idUsuario = null;
+            }
+        }
+
+        $ip = $direccionIp ?? ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');
+        $ua = $userAgent ?? ($_SERVER['HTTP_USER_AGENT'] ?? '');
+
+        $service = new App\Bitacora\Service\BitacoraService();
+        $dto = $service->validarYPreparar([
+            'id_usuario' => $idUsuario,
+            'accion' => $accion,
+            'descripcion' => $descripcion,
+            'direccion_ip' => $ip,
+            'user_agent' => $ua,
+        ]);
+
+        $repositorio = new App\Bitacora\Repository\BitacoraRepository();
+        $repositorio->registrar_bitacora($dto);
+    } catch (\Exception $e) {
+        error_log("Error al registrar en bitácora: " . $e->getMessage());
+    }
+}

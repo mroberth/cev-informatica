@@ -1,4 +1,5 @@
 import { apiClient } from '/js/api/client.js';
+import { CevAlert } from '/js/utils/CevAlert.js';
 
 const modal = document.getElementById('modalEditarUsuario');
 let bootstrapModal = null;

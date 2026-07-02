@@ -58,13 +58,10 @@ class ApiClient {
       };
 
       const status = response.status;
-      const prioridadServidor = status === 400 || status === 422;
 
-      let errorMsg = prioridadServidor
-        ? (mensajeDelServidor || erroresHTTP[status])
-        : (erroresHTTP[status] || mensajeDelServidor);
+      const errorMsg = mensajeDelServidor || erroresHTTP[status] || `Error del servidor (${status})`;
 
-      throw new Error(errorMsg || `Error del servidor (${status})`);
+      throw new Error(errorMsg);
     }
 
     try {
