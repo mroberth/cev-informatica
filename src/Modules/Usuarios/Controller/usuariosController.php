@@ -99,3 +99,139 @@ function consultar_usuarios_data(): void {
     echo json_encode(['data' => $usuarios]);
     exit;
 }
+
+function obtener_usuario(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $id = $_GET['id'] ?? 0;
+
+    if (empty($id) || !is_numeric($id)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID de usuario inválido.']);
+        exit;
+    }
+
+    $repositorio = new UsuariosRepository();
+    $usuario = $repositorio->obtener_usuario_por_id((int) $id);
+
+    if (!$usuario) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Usuario no encontrado.']);
+        exit;
+    }
+
+    echo json_encode(['data' => $usuario]);
+    exit;
+}
+
+function actualizar_usuario(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (!is_array($input)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Datos inválidos.']);
+        return;
+    }
+
+    $id = (int) ($input['id'] ?? 0);
+    if ($id <= 0) {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID de usuario inválido.']);
+        return;
+    }
+
+    $usuarioDTO = new UsuarioDTO(
+        $id,
+        (string) ($input['nombre'] ?? ''),
+        (string) ($input['apellido'] ?? ''),
+        (string) ($input['correo'] ?? ''),
+        '',
+        (int) ($input['rol_id'] ?? 0),
+        (string) ($input['estado'] ?? '')
+    );
+
+    $password = $input['password'] ?? '';
+
+    try {
+        $service = new UsuarioService();
+        $usuarioValidado = $service->validarUsuarioSinPassword($usuarioDTO);
+
+        $repositorio = new UsuariosRepository();
+        $actualizado = $repositorio->actualizar_usuario($usuarioValidado, $password);
+
+        if ($actualizado) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Usuario actualizado correctamente.'
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo actualizar el usuario.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}
+
+function cambiar_estado(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    if (!is_array($input)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Datos inválidos.']);
+        return;
+    }
+
+    $id = (int) ($input['id'] ?? 0);
+    $estado = (string) ($input['estado'] ?? '');
+
+    if ($id <= 0 || !in_array($estado, ['activo', 'inactivo'], true)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Parámetros inválidos.']);
+        return;
+    }
+
+    try {
+        $repositorio = new UsuariosRepository();
+        $usuario = $repositorio->obtener_usuario_por_id($id);
+
+        if (!$usuario) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Usuario no encontrado.']);
+            return;
+        }
+
+        if ($estado === 'inactivo' && $usuario['rol'] === 'Admin') {
+            $adminsActivos = $repositorio->contar_administradores_activos();
+            if ($adminsActivos <= 1) {
+                http_response_code(400);
+                echo json_encode(['error' => 'No puedes desactivar al único administrador activo del sistema.']);
+                return;
+            }
+        }
+
+        $resultado = $repositorio->cambiar_estado($id, $estado);
+
+        if ($resultado) {
+            $accion = $estado === 'activo' ? 'activado' : 'desactivado';
+            echo json_encode([
+                'status' => 'success',
+                'message' => "Usuario {$accion} correctamente."
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo cambiar el estado del usuario.']);
+        }
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+    exit;
+}

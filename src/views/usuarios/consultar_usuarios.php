@@ -19,6 +19,6 @@ $pageScripts = [
     '/plugins/datatables/js/dataTables.responsive.min.js',
     '/plugins/datatables/js/responsive.bootstrap5.min.js',
 ];
-$pageModuleScripts = ['/js/modules/usuarios/consultar.js'];
+$pageModuleScripts = ['/js/modules/usuarios/consultar.js', '/js/modules/usuarios/editar.js', '/js/modules/usuarios/eliminar.js'];
 $contentView = 'usuarios/consultar_content.php';
 require_once BASE_PATH . '/src/views/layouts/admin.php';

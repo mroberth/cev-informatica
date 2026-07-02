@@ -30,3 +30,18 @@ Router::get('a/usuarios/consultar_usuarios', function(){
 	cargar_controlador('Usuarios','usuariosController.php');
 	consultar_usuarios_data();
 });
+
+Router::get('a/usuarios/obtener_usuario', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	obtener_usuario();
+});
+
+Router::post('a/usuarios/actualizar_usuario', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	actualizar_usuario();
+});
+
+Router::post('a/usuarios/cambiar_estado', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	cambiar_estado();
+});

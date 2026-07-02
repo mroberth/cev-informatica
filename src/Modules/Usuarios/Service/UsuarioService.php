@@ -55,6 +55,17 @@ class UsuarioService
 		$this->validarEstado($usuario->getEstado());
 	}
 
+	public function validarUsuarioSinPassword(UsuarioDTO $usuario): UsuarioDTO
+	{
+		$this->validarNombre($usuario->getNombre());
+		$this->validarApellido($usuario->getApellido());
+		$this->validarCorreo($usuario->getCorreo());
+		$this->validarRolId($usuario->getUsuarioId());
+		$this->validarEstado($usuario->getEstado());
+
+		return $usuario;
+	}
+
 	private function validarNombre(string $nombre): void
 	{
 		if ($nombre === '') {

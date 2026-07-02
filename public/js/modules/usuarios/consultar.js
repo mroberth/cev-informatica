@@ -1,12 +1,15 @@
 import { initAdminShell } from '/js/modules/admin/common.js';
-import { apiClient } from '/js/api/client.js';
-import { CevAlert } from '/js/utils/CevAlert.js';
+import { initEditarUsuarios } from '/js/modules/usuarios/editar.js';
+import { initEliminarUsuarios } from '/js/modules/usuarios/eliminar.js';
 
 let dataTable = null;
 
-const inicializarDataTable = (usuarios) => {
+const inicializarDataTable = () => {
   dataTable = new DataTable('#tablaUsuarios', {
-    data: usuarios,
+    ajax: {
+      url: '/a/usuarios/consultar_usuarios',
+      dataSrc: 'data',
+    },
     columns: [
       { data: 'nombre' },
       { data: 'apellido' },
@@ -42,12 +45,12 @@ const inicializarDataTable = (usuarios) => {
     autoWidth: false,
     order: [[0, 'asc']],
     pageLength: 10,
-    dom: '<"d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"Bf>rt<"d-flex flex-wrap align-items-center justify-content-between gap-2"<"d-inline-flex"i><"d-inline-flex"p>>',
+    dom: '<"d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"Bf>rt<"d-flex flex-wrap align-items-center justify-content-between gap-2 pt-3"<"d-inline-flex"i><"d-inline-flex"p>>',
     buttons: [
       {
         extend: 'excelHtml5',
         text: '<i class="bi bi-file-earmark-excel me-1"></i>Excel',
-        className: 'btn btn-success btn-sm',
+        className: 'btn btn-success',
         titleAttr: 'Exportar a Excel',
         exportOptions: {
           columns: ':visible:not(:last-child)'
@@ -56,38 +59,30 @@ const inicializarDataTable = (usuarios) => {
       {
         extend: 'pdfHtml5',
         text: '<i class="bi bi-file-earmark-pdf me-1"></i>PDF',
-        className: 'btn btn-danger btn-sm',
+        className: 'btn btn-danger',
         titleAttr: 'Exportar a PDF',
         exportOptions: {
           columns: ':visible:not(:last-child)'
         }
       }
-    ]
-  });
-};
-
-const cargarUsuarios = async () => {
-  try {
-    const response = await apiClient.get('a/usuarios/consultar_usuarios');
-    const usuarios = response.data ?? response;
-
-    if (dataTable) {
-      dataTable.destroy();
-      dataTable = null;
+    ],
+    initComplete: function () {
+      initEditarUsuarios(dataTable);
+      initEliminarUsuarios(dataTable);
     }
-
-    inicializarDataTable(usuarios);
-  } catch (error) {
-    CevAlert.error({
-      title: 'Error al cargar usuarios',
-      text: error.message || 'Ocurrió un error al obtener el listado de usuarios.',
-    });
-  }
+  });
 };
 
 const initConsultarUsuarios = () => {
   initAdminShell();
-  cargarUsuarios();
+  inicializarDataTable();
 };
 
-document.addEventListener('DOMContentLoaded', initConsultarUsuarios);
+document.addEventListener('DOMContentLoaded', () => {
+  initConsultarUsuarios();
+  document.addEventListener('cev:usuario-actualizado', () => {
+    if (dataTable) {
+      dataTable.ajax.reload(null, false);
+    }
+  });
+});
