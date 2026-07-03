@@ -1,5 +1,6 @@
 <?php
 use App\Configuracion\Repository\ConfigRepository;
+use App\Configuracion\Service\ConfigService;
 
 function configuracion(): void{
     require_once BASE_PATH . "/src/views/config/crear_config.php";
@@ -56,23 +57,32 @@ function guardar_rol(): void {
         return;
     }
 
-    $nombre = trim((string) ($input['nombre_rol'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    $repositorio = new ConfigRepository();
+        $rolDTO = $service->validarRol(
+            (string) ($input['nombre_rol'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    if ($repositorio->rolExiste($nombre)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe un rol con ese nombre.']);
-        return;
-    }
+        if ($repositorio->rolExiste($rolDTO->getNombreRol())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe un rol con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->crearRol($nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('CREAR', "Rol creado: {$nombre}");
-        echo json_encode(['status' => 'success', 'message' => 'Rol creado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo crear el rol.']);
+        if ($repositorio->crearRol($rolDTO->getNombreRol(), $rolDTO->getDescripcion())) {
+            registrar_en_bitacora('CREAR', "Rol creado: {$rolDTO->getNombreRol()}");
+            echo json_encode(['status' => 'success', 'message' => 'Rol creado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo crear el rol.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
@@ -87,30 +97,33 @@ function actualizar_rol(): void {
         return;
     }
 
-    $id = (int) ($input['id'] ?? 0);
-    $nombre = trim((string) ($input['nombre_rol'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    if ($id <= 0) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID inválido.']);
-        return;
-    }
+        $rolDTO = $service->validarRolExistente(
+            (int) ($input['id'] ?? 0),
+            (string) ($input['nombre_rol'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    $repositorio = new ConfigRepository();
+        if ($repositorio->rolExiste($rolDTO->getNombreRol(), $rolDTO->getId())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe otro rol con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->rolExiste($nombre, $id)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe otro rol con ese nombre.']);
-        return;
-    }
-
-    if ($repositorio->actualizarRol($id, $nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('ACTUALIZAR', "Rol actualizado: {$nombre} (ID: {$id})");
-        echo json_encode(['status' => 'success', 'message' => 'Rol actualizado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo actualizar el rol.']);
+        if ($repositorio->actualizarRol($rolDTO->getId(), $rolDTO->getNombreRol(), $rolDTO->getDescripcion())) {
+            registrar_en_bitacora('ACTUALIZAR', "Rol actualizado: {$rolDTO->getNombreRol()} (ID: {$rolDTO->getId()})");
+            echo json_encode(['status' => 'success', 'message' => 'Rol actualizado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo actualizar el rol.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
@@ -134,23 +147,32 @@ function guardar_modulo(): void {
         return;
     }
 
-    $nombre = trim((string) ($input['nombre'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    $repositorio = new ConfigRepository();
+        $moduloDTO = $service->validarModulo(
+            (string) ($input['nombre'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    if ($repositorio->moduloExiste($nombre)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe un módulo con ese nombre.']);
-        return;
-    }
+        if ($repositorio->moduloExiste($moduloDTO->getNombre())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe un módulo con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->crearModulo($nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('CREAR', "Módulo creado: {$nombre}");
-        echo json_encode(['status' => 'success', 'message' => 'Módulo creado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo crear el módulo.']);
+        if ($repositorio->crearModulo($moduloDTO->getNombre(), $moduloDTO->getDescripcion())) {
+            registrar_en_bitacora('CREAR', "Módulo creado: {$moduloDTO->getNombre()}");
+            echo json_encode(['status' => 'success', 'message' => 'Módulo creado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo crear el módulo.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
@@ -165,30 +187,33 @@ function actualizar_modulo(): void {
         return;
     }
 
-    $id = (int) ($input['id'] ?? 0);
-    $nombre = trim((string) ($input['nombre'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    if ($id <= 0) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID inválido.']);
-        return;
-    }
+        $moduloDTO = $service->validarModuloExistente(
+            (int) ($input['id'] ?? 0),
+            (string) ($input['nombre'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    $repositorio = new ConfigRepository();
+        if ($repositorio->moduloExiste($moduloDTO->getNombre(), $moduloDTO->getId())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe otro módulo con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->moduloExiste($nombre, $id)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe otro módulo con ese nombre.']);
-        return;
-    }
-
-    if ($repositorio->actualizarModulo($id, $nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('ACTUALIZAR', "Módulo actualizado: {$nombre} (ID: {$id})");
-        echo json_encode(['status' => 'success', 'message' => 'Módulo actualizado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo actualizar el módulo.']);
+        if ($repositorio->actualizarModulo($moduloDTO->getId(), $moduloDTO->getNombre(), $moduloDTO->getDescripcion())) {
+            registrar_en_bitacora('ACTUALIZAR', "Módulo actualizado: {$moduloDTO->getNombre()} (ID: {$moduloDTO->getId()})");
+            echo json_encode(['status' => 'success', 'message' => 'Módulo actualizado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo actualizar el módulo.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
@@ -212,23 +237,32 @@ function guardar_permiso(): void {
         return;
     }
 
-    $nombre = trim((string) ($input['nombre'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    $repositorio = new ConfigRepository();
+        $permisoDTO = $service->validarPermiso(
+            (string) ($input['nombre'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    if ($repositorio->permisoExiste($nombre)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe un permiso con ese nombre.']);
-        return;
-    }
+        if ($repositorio->permisoExiste($permisoDTO->getNombre())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe un permiso con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->crearPermiso($nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('CREAR', "Permiso creado: {$nombre}");
-        echo json_encode(['status' => 'success', 'message' => 'Permiso creado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo crear el permiso.']);
+        if ($repositorio->crearPermiso($permisoDTO->getNombre(), $permisoDTO->getDescripcion())) {
+            registrar_en_bitacora('CREAR', "Permiso creado: {$permisoDTO->getNombre()}");
+            echo json_encode(['status' => 'success', 'message' => 'Permiso creado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo crear el permiso.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
@@ -243,30 +277,33 @@ function actualizar_permiso(): void {
         return;
     }
 
-    $id = (int) ($input['id'] ?? 0);
-    $nombre = trim((string) ($input['nombre'] ?? ''));
-    $descripcion = trim((string) ($input['descripcion'] ?? ''));
+    try {
+        $service = new ConfigService();
+        $repositorio = new ConfigRepository();
 
-    if ($id <= 0) {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID inválido.']);
-        return;
-    }
+        $permisoDTO = $service->validarPermisoExistente(
+            (int) ($input['id'] ?? 0),
+            (string) ($input['nombre'] ?? ''),
+            (string) ($input['descripcion'] ?? '')
+        );
 
-    $repositorio = new ConfigRepository();
+        if ($repositorio->permisoExiste($permisoDTO->getNombre(), $permisoDTO->getId())) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Ya existe otro permiso con ese nombre.']);
+            return;
+        }
 
-    if ($repositorio->permisoExiste($nombre, $id)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Ya existe otro permiso con ese nombre.']);
-        return;
-    }
-
-    if ($repositorio->actualizarPermiso($id, $nombre, $descripcion ?: null)) {
-        registrar_en_bitacora('ACTUALIZAR', "Permiso actualizado: {$nombre} (ID: {$id})");
-        echo json_encode(['status' => 'success', 'message' => 'Permiso actualizado correctamente.']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['error' => 'No se pudo actualizar el permiso.']);
+        if ($repositorio->actualizarPermiso($permisoDTO->getId(), $permisoDTO->getNombre(), $permisoDTO->getDescripcion())) {
+            registrar_en_bitacora('ACTUALIZAR', "Permiso actualizado: {$permisoDTO->getNombre()} (ID: {$permisoDTO->getId()})");
+            echo json_encode(['status' => 'success', 'message' => 'Permiso actualizado correctamente.']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudo actualizar el permiso.']);
+        }
+    } catch (Exception $e) {
+        $code = $e->getCode() >= 400 && $e->getCode() < 600 ? $e->getCode() : 500;
+        http_response_code($code);
+        echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
 }
