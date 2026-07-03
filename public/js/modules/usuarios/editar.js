@@ -227,7 +227,7 @@ document.getElementById('formEditarUsuario').addEventListener('submit', async (e
       });
 
       CevAlert.success({
-        title: 'Actualizado',
+        title: 'Actualización Exitosa',
         text: 'Usuario actualizado correctamente.',
       });
 

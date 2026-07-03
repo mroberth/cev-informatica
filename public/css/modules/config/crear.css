@@ -1,0 +1,37 @@
+.nav-tabs .nav-link {
+  color: #6c757d;
+  font-weight: 500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.2s;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #1a2a4a;
+  border-bottom-color: #1a2a4a;
+}
+
+.nav-tabs .nav-link.active {
+  color: #1a2a4a;
+  font-weight: 600;
+  border-bottom-color: #1a2a4a;
+  background: transparent;
+}
+
+.card-title {
+  color: #1a2a4a;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#configTabsContent .table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+}
+
+#configTabsContent .table td {
+  font-size: 0.9rem;
+}

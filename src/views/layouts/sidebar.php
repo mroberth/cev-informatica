@@ -102,6 +102,16 @@ $menusSidebar = [
                     ['href' => '/a/bitacora', 'icono' => 'bi-search', 'texto' => 'Consultar'],
                 ],
             ],
+            [
+                'id' => 'subConfiguracion',
+                'titulo' => 'Configuración',
+                'icono' => 'bi-gear',
+                'base' => '/a/configuracion',
+                'items' => [
+                    ['href' => '/a/configuracion/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/configuracion/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
+            ],
         ],
     ],
     [
