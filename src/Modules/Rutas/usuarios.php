@@ -21,6 +21,16 @@ Router::get('a/usuarios/verificar_correo', function(){
 	validar_correo();
 });
 
+Router::get('a/usuarios/verificar_cedula', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	validar_cedula();
+});
+
+Router::get('a/usuarios/verificar_telefono', function(){
+	cargar_controlador('Usuarios','usuariosController.php');
+	validar_telefono();
+});
+
 Router::post('a/usuarios/registrar_usuarios', function(){
 	cargar_controlador('Usuarios','usuariosController.php');
 	registrar_usuarios();

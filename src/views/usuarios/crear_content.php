@@ -14,6 +14,35 @@
 
             <div class="row g-3">
 
+              <!-- Tipo Cédula + Cédula -->
+              <div class="col-md-6 mb-2">
+                <label for="tipo_cedula" class="form-label fw-semibold text-secondary small">
+                  <i class="bi bi-credit-card me-1"></i>Cédula de Identidad
+                </label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-credit-card"></i></span>
+                  <select class="form-select border-start-0 ps-0" id="tipo_cedula" name="tipo_cedula" style="flex: 0 0 70px;">
+                    <option value="V">V</option>
+                    <option value="E">E</option>
+                  </select>
+                  <input type="text" class="form-control border-start-0 border-end-0 ps-0" id="cedula" name="cedula" placeholder="12345678" maxlength="8" style="border-radius:0;">
+                  <div class="invalid-feedback" id="tipo_cedulaError"></div>
+                  <div class="invalid-feedback" id="cedulaError"></div>
+                </div>
+              </div>
+
+              <!-- Teléfono -->
+              <div class="col-md-6 mb-2">
+                <label for="telefono" class="form-label fw-semibold text-secondary small">
+                  <i class="bi bi-telephone me-1"></i>Teléfono
+                </label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-telephone"></i></span>
+                  <input type="text" class="form-control border-start-0 ps-0" id="telefono" name="telefono" placeholder="04129298008" maxlength="11">
+                  <div class="invalid-feedback" id="telefonoError"></div>
+                </div>
+              </div>
+
               <div class="col-md-6 mb-2">
                 <label for="nombre" class="form-label fw-semibold text-secondary small">
                   <i class="bi bi-person me-1"></i>Nombre

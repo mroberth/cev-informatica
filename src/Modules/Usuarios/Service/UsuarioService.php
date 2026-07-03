@@ -11,6 +11,8 @@ class UsuarioService
 	private const NOMBRE_REGEX = '/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/u';
 	private const CORREO_REGEX = '/^[a-zA-Z0-9._%+-]+@(hotmail|yahoo|gmail|outlook)\.(com|es|net|org)$/i';
 	private const ESTADOS_VALIDOS = ['activo', 'inactivo'];
+	private const TIPOS_CEDULA = ['V', 'E'];
+	private const PREFIJOS_TELEFONO = ['0412', '0414', '0416', '0424', '0426', '0422'];
 
 	public function validarUsuario(UsuarioDTO $usuario): UsuarioDTO
 	{
@@ -19,51 +21,54 @@ class UsuarioService
 		return $usuario;
 	}
 
-	public function validarYPreparar(array $datos): array
+	public function validarUsuarioSinPassword(UsuarioDTO $usuario): UsuarioDTO
 	{
-		$nombre = $this->normalizarTexto($datos['nombre'] ?? '');
-		$apellido = $this->normalizarTexto($datos['apellido'] ?? '');
-		$correo = $this->normalizarTexto($datos['correo'] ?? '');
-		$password = (string) ($datos['password'] ?? '');
-		$rolId = $datos['rol_id'] ?? null;
-		$estado = $this->normalizarTexto($datos['estado'] ?? '');
+		$this->validarTipoCedula($usuario->getTipoCedula());
+		$this->validarCedula($usuario->getCedula());
+		$this->validarNombre($usuario->getNombre());
+		$this->validarApellido($usuario->getApellido());
+		$this->validarCorreo($usuario->getCorreo());
+		$this->validarTelefono($usuario->getTelefono());
+		$this->validarRolId($usuario->getUsuarioId());
+		$this->validarEstado($usuario->getEstado());
 
-		$this->validarNombre($nombre);
-		$this->validarApellido($apellido);
-		$this->validarCorreo($correo);
-		$this->validarPassword($password);
-		$rolId = $this->validarRolId($rolId);
-		$this->validarEstado($estado);
-
-		return [
-			'nombre' => $nombre,
-			'apellido' => $apellido,
-			'correo' => $correo,
-			'password_hash' => password_hash($password, PASSWORD_DEFAULT),
-			'rol_id' => $rolId,
-			'estado' => $estado,
-		];
+		return $usuario;
 	}
 
 	private function validarUsuarioInterno(UsuarioDTO $usuario): void
 	{
+		$this->validarTipoCedula($usuario->getTipoCedula());
+		$this->validarCedula($usuario->getCedula());
 		$this->validarNombre($usuario->getNombre());
 		$this->validarApellido($usuario->getApellido());
 		$this->validarCorreo($usuario->getCorreo());
+		$this->validarTelefono($usuario->getTelefono());
 		$this->validarPassword($usuario->getPassword());
 		$this->validarRolId($usuario->getUsuarioId());
 		$this->validarEstado($usuario->getEstado());
 	}
 
-	public function validarUsuarioSinPassword(UsuarioDTO $usuario): UsuarioDTO
+	private function validarTipoCedula(string $tipoCedula): void
 	{
-		$this->validarNombre($usuario->getNombre());
-		$this->validarApellido($usuario->getApellido());
-		$this->validarCorreo($usuario->getCorreo());
-		$this->validarRolId($usuario->getUsuarioId());
-		$this->validarEstado($usuario->getEstado());
+		if (!in_array($tipoCedula, self::TIPOS_CEDULA, true)) {
+			throw new Exception('El tipo de cédula debe ser V o E.', 400);
+		}
+	}
 
-		return $usuario;
+	private function validarCedula(string $cedula): void
+	{
+		if ($cedula === '') {
+			throw new Exception('La cédula es obligatoria.', 400);
+		}
+
+		if (!ctype_digit($cedula)) {
+			throw new Exception('La cédula debe contener solo números.', 400);
+		}
+
+		$longitud = strlen($cedula);
+		if ($longitud < 6 || $longitud > 8) {
+			throw new Exception('La cédula debe tener entre 6 y 8 dígitos.', 400);
+		}
 	}
 
 	private function validarNombre(string $nombre): void
@@ -116,6 +121,26 @@ class UsuarioService
 
 		if (!preg_match(self::CORREO_REGEX, $correo)) {
 			throw new Exception('El correo ingresado es inválido.', 400);
+		}
+	}
+
+	private function validarTelefono(string $telefono): void
+	{
+		if ($telefono === '') {
+			throw new Exception('El teléfono es obligatorio.', 400);
+		}
+
+		if (!ctype_digit($telefono)) {
+			throw new Exception('El teléfono debe contener solo números.', 400);
+		}
+
+		if (strlen($telefono) !== 11) {
+			throw new Exception('El teléfono debe tener 11 dígitos.', 400);
+		}
+
+		$prefijo = substr($telefono, 0, 4);
+		if (!in_array($prefijo, self::PREFIJOS_TELEFONO, true)) {
+			throw new Exception('El prefijo del teléfono no es válido (use 0412, 0414, 0416, 0422, 0424, 0426).', 400);
 		}
 	}
 

@@ -19,21 +19,52 @@ class UsuariosRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function validar_correo(string $correo): bool {
-        $query = "SELECT correo FROM usuarios WHERE correo = :correo";
-        $stmt = $this->conexion->prepare($query);
-        $stmt->bindValue(':correo', $correo, PDO::PARAM_STR);
-        $stmt->execute();
+    public function validar_correo(string $correo, ?int $idExcluir = null): bool {
+        $sql = "SELECT correo FROM usuarios WHERE correo = :correo";
+        $params = [':correo' => $correo];
+        if ($idExcluir !== null) {
+            $sql .= " AND id != :id_excluir";
+            $params[':id_excluir'] = $idExcluir;
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute($params);
+        return (bool) $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function validar_cedula(string $tipoCedula, string $cedula, ?int $idExcluir = null): bool {
+        $sql = "SELECT id FROM usuarios WHERE tipo_cedula = :tipo_cedula AND cedula = :cedula";
+        $params = [':tipo_cedula' => $tipoCedula, ':cedula' => $cedula];
+        if ($idExcluir !== null) {
+            $sql .= " AND id != :id_excluir";
+            $params[':id_excluir'] = $idExcluir;
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute($params);
+        return (bool) $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function validar_telefono(string $telefono, ?int $idExcluir = null): bool {
+        $sql = "SELECT id FROM usuarios WHERE telefono = :telefono";
+        $params = [':telefono' => $telefono];
+        if ($idExcluir !== null) {
+            $sql .= " AND id != :id_excluir";
+            $params[':id_excluir'] = $idExcluir;
+        }
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute($params);
         return (bool) $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function registrar_usuario(UsuarioDTO $usuario): int {
-        $query = "INSERT INTO usuarios (nombre, apellido, correo, password_hash, rol_id, estado)
-                  VALUES (:nombre, :apellido, :correo, :password_hash, :rol_id, :estado)";
+        $query = "INSERT INTO usuarios (tipo_cedula, cedula, nombre, apellido, correo, telefono, password_hash, rol_id, estado)
+                  VALUES (:tipo_cedula, :cedula, :nombre, :apellido, :correo, :telefono, :password_hash, :rol_id, :estado)";
         $stmt = $this->conexion->prepare($query);
+        $stmt->bindValue(':tipo_cedula', $usuario->getTipoCedula(), PDO::PARAM_STR);
+        $stmt->bindValue(':cedula', $usuario->getCedula(), PDO::PARAM_STR);
         $stmt->bindValue(':nombre', $usuario->getNombre(), PDO::PARAM_STR);
         $stmt->bindValue(':apellido', $usuario->getApellido(), PDO::PARAM_STR);
         $stmt->bindValue(':correo', $usuario->getCorreo(), PDO::PARAM_STR);
+        $stmt->bindValue(':telefono', $usuario->getTelefono(), PDO::PARAM_STR);
         $stmt->bindValue('password_hash', password_hash($usuario->getPassword(), PASSWORD_DEFAULT), PDO::PARAM_STR);
         $stmt->bindValue(':rol_id', $usuario->getUsuarioId(), PDO::PARAM_INT);
         $stmt->bindValue(':estado', $usuario->getEstado(), PDO::PARAM_STR);
@@ -43,7 +74,7 @@ class UsuariosRepository {
     }
 
     public function consultar_usuarios(): array {
-        $query = "SELECT u.id, u.nombre, u.apellido, u.correo, r.nombre_rol AS rol, u.estado
+        $query = "SELECT u.id, u.tipo_cedula, u.cedula, u.nombre, u.apellido, u.correo, u.telefono, u.rol_id, r.nombre_rol AS rol, u.estado
                   FROM usuarios u
                   JOIN roles r ON u.rol_id = r.id";
         $stmt = $this->conexion->prepare($query);
@@ -52,7 +83,7 @@ class UsuariosRepository {
     }
 
     public function actualizar_usuario(UsuarioDTO $usuario, ?string $passwordNueva = null): bool {
-        $campos = "nombre = :nombre, apellido = :apellido, correo = :correo, rol_id = :rol_id, estado = :estado";
+        $campos = "tipo_cedula = :tipo_cedula, cedula = :cedula, nombre = :nombre, apellido = :apellido, correo = :correo, telefono = :telefono, rol_id = :rol_id, estado = :estado";
 
         if ($passwordNueva !== null && $passwordNueva !== '') {
             $campos .= ", password_hash = :password_hash";
@@ -62,9 +93,12 @@ class UsuariosRepository {
         $stmt = $this->conexion->prepare($query);
 
         $stmt->bindValue(':id', $usuario->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':tipo_cedula', $usuario->getTipoCedula(), PDO::PARAM_STR);
+        $stmt->bindValue(':cedula', $usuario->getCedula(), PDO::PARAM_STR);
         $stmt->bindValue(':nombre', $usuario->getNombre(), PDO::PARAM_STR);
         $stmt->bindValue(':apellido', $usuario->getApellido(), PDO::PARAM_STR);
         $stmt->bindValue(':correo', $usuario->getCorreo(), PDO::PARAM_STR);
+        $stmt->bindValue(':telefono', $usuario->getTelefono(), PDO::PARAM_STR);
         $stmt->bindValue(':rol_id', $usuario->getUsuarioId(), PDO::PARAM_INT);
         $stmt->bindValue(':estado', $usuario->getEstado(), PDO::PARAM_STR);
 
@@ -93,7 +127,7 @@ class UsuariosRepository {
     }
 
     public function obtener_usuario_por_id(int $id): ?array {
-        $query = "SELECT u.id, u.nombre, u.apellido, u.correo, u.rol_id, r.nombre_rol AS rol, u.estado
+        $query = "SELECT u.id, u.tipo_cedula, u.cedula, u.nombre, u.apellido, u.correo, u.telefono, u.rol_id, r.nombre_rol AS rol, u.estado
                   FROM usuarios u
                   JOIN roles r ON u.rol_id = r.id
                   WHERE u.id = :id";
@@ -103,5 +137,4 @@ class UsuariosRepository {
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado ?: null;
     }
-
 }

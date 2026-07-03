@@ -26,6 +26,7 @@ function validar_correo(): void {
     header('Content-Type: application/json; charset=utf-8');
 
     $correo = $_GET['correo'] ?? '';
+    $idExcluir = isset($_GET['id_excluir']) ? (int) $_GET['id_excluir'] : null;
 
     if (empty($correo)) {
         http_response_code(400);
@@ -34,7 +35,46 @@ function validar_correo(): void {
     }
 
     $repositorio = new UsuariosRepository();
-    $existe = $repositorio->validar_correo($correo);
+    $existe = $repositorio->validar_correo($correo, $idExcluir);
+
+    echo json_encode(['existe' => $existe]);
+    exit;
+}
+
+function validar_cedula(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $tipoCedula = $_GET['tipo_cedula'] ?? '';
+    $cedula = $_GET['cedula'] ?? '';
+    $idExcluir = isset($_GET['id_excluir']) ? (int) $_GET['id_excluir'] : null;
+
+    if (empty($tipoCedula) || empty($cedula)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tipo de cédula y cédula son obligatorios.']);
+        exit;
+    }
+
+    $repositorio = new UsuariosRepository();
+    $existe = $repositorio->validar_cedula($tipoCedula, $cedula, $idExcluir);
+
+    echo json_encode(['existe' => $existe]);
+    exit;
+}
+
+function validar_telefono(): void {
+    header('Content-Type: application/json; charset=utf-8');
+
+    $telefono = $_GET['telefono'] ?? '';
+    $idExcluir = isset($_GET['id_excluir']) ? (int) $_GET['id_excluir'] : null;
+
+    if (empty($telefono)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'El teléfono es obligatorio.']);
+        exit;
+    }
+
+    $repositorio = new UsuariosRepository();
+    $existe = $repositorio->validar_telefono($telefono, $idExcluir);
 
     echo json_encode(['existe' => $existe]);
     exit;
@@ -56,9 +96,12 @@ function registrar_usuarios() : void {
 
     $usuarioDTO = new UsuarioDTO(
         0,
+        (string) ($input['tipo_cedula'] ?? ''),
+        (string) ($input['cedula'] ?? ''),
         (string) ($input['nombre'] ?? ''),
         (string) ($input['apellido'] ?? ''),
         (string) ($input['correo'] ?? ''),
+        (string) ($input['telefono'] ?? ''),
         (string) ($input['password'] ?? ''),
         (int) ($input['rol_id'] ?? 0),
         (string) ($input['estado'] ?? '')
@@ -69,6 +112,19 @@ function registrar_usuarios() : void {
         $repositorio = new UsuariosRepository();
 
         $usuarioValidado = $service->validarUsuario($usuarioDTO);
+
+        if ($repositorio->validar_cedula($usuarioValidado->getTipoCedula(), $usuarioValidado->getCedula())) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'error' => 'La cédula ingresada ya se encuentra registrada.']);
+            return;
+        }
+
+        if ($repositorio->validar_telefono($usuarioValidado->getTelefono())) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'error' => 'El teléfono ingresado ya se encuentra registrado.']);
+            return;
+        }
+
         $idInsertado = $repositorio->registrar_usuario($usuarioValidado);
 
         registrar_en_bitacora(
@@ -149,9 +205,12 @@ function actualizar_usuario(): void {
 
     $usuarioDTO = new UsuarioDTO(
         $id,
+        (string) ($input['tipo_cedula'] ?? ''),
+        (string) ($input['cedula'] ?? ''),
         (string) ($input['nombre'] ?? ''),
         (string) ($input['apellido'] ?? ''),
         (string) ($input['correo'] ?? ''),
+        (string) ($input['telefono'] ?? ''),
         '',
         (int) ($input['rol_id'] ?? 0),
         (string) ($input['estado'] ?? '')
@@ -164,6 +223,19 @@ function actualizar_usuario(): void {
         $usuarioValidado = $service->validarUsuarioSinPassword($usuarioDTO);
 
         $repositorio = new UsuariosRepository();
+
+        if ($repositorio->validar_cedula($usuarioValidado->getTipoCedula(), $usuarioValidado->getCedula(), $id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La cédula ingresada ya se encuentra registrada por otro usuario.']);
+            return;
+        }
+
+        if ($repositorio->validar_telefono($usuarioValidado->getTelefono(), $id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El teléfono ingresado ya se encuentra registrado por otro usuario.']);
+            return;
+        }
+
         $actualizado = $repositorio->actualizar_usuario($usuarioValidado, $password);
 
         if ($actualizado) {

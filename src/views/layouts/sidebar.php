@@ -26,12 +26,14 @@ $menusSidebar = [
                 'items' => [],
             ],
             [
-                'id' => 'subInscripciones',
-                'titulo' => 'Inscripciones',
-                'icono' => 'bi-journal-plus',
-                'base' => '/a/inscripciones',
-                'items' => [],
-                'placeholder' => true,
+                'id' => 'subUnidadesCurriculares',
+                'titulo' => 'Unidades Curriculares',
+                'icono' => 'bi-book',
+                'base' => '/a/unidades-curriculares',
+                'items' => [
+                    ['href' => '/a/unidades-curriculares/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/unidades-curriculares/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
             ],
             [
                 'id' => 'subPlanificacionAcademica',

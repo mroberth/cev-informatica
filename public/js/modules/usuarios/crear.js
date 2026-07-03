@@ -10,9 +10,12 @@ export const initCrearUsuarios = () => {
   obtenerRoles();
 
   const elements = {
+    tipo_cedula: form.tipo_cedula,
+    cedula: form.cedula,
     nombre: form.nombre,
     apellido: form.apellido,
     correo: form.correo,
+    telefono: form.telefono,
     password: form.password,
     rol_id: form.rol_id,
     estado: form.estado,
@@ -32,19 +35,45 @@ export const initCrearUsuarios = () => {
     field.classList.add('is-valid');
   };
 
-  const togglePasswordVisibility = () => {
-    const toggleButton = document.getElementById('togglePassword');
-    const toggleIcon = document.getElementById('togglePasswordIcon');
-    if (!toggleButton || !toggleIcon) return;
+  function validarCedula() {
+    const cedula = elements.cedula.value;
+    const regex = /^\d+$/;
 
-    toggleButton.addEventListener('click', () => {
-      const currentType = elements.password.type;
-      const nextType = currentType === 'password' ? 'text' : 'password';
-      elements.password.type = nextType;
-      toggleIcon.classList.toggle('bi-eye', nextType === 'text');
-      toggleIcon.classList.toggle('bi-eye-slash', nextType === 'password');
-    });
-  };
+    if (cedula.trim() === '') {
+      showError(elements.cedula, 'La cédula es obligatoria.');
+      return false;
+    }
+
+    if (!regex.test(cedula)) {
+      showError(elements.cedula, 'La cédula debe contener solo números.');
+      return false;
+    }
+
+    if (cedula.length < 6 || cedula.length > 8) {
+      showError(elements.cedula, 'La cédula debe tener entre 6 y 8 dígitos.');
+      return false;
+    }
+
+    clearError(elements.cedula);
+    return true;
+  }
+
+  async function verificarCedula() {
+    if (!validarCedula()) return false;
+    const tipo = elements.tipo_cedula.value;
+
+    try {
+      const response = await apiClient.get(`a/usuarios/verificar_cedula?tipo_cedula=${encodeURIComponent(tipo)}&cedula=${encodeURIComponent(elements.cedula.value)}`);
+      if (response.existe) {
+        showError(elements.cedula, 'La cédula ingresada ya se encuentra registrada.');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error al verificar cédula:', error);
+    }
+
+    return true;
+  }
 
   function validarNombre(){
     const nombre = elements.nombre.value;
@@ -121,7 +150,6 @@ export const initCrearUsuarios = () => {
       return false;
     }
 
-    //Validacion en tiempo real en la base de datos
     try {
       const response = await apiClient.get('a/usuarios/verificar_correo?correo=' + encodeURIComponent(correo));
       if (response.existe) {
@@ -133,6 +161,52 @@ export const initCrearUsuarios = () => {
     }
 
     clearError(elements.correo);
+    return true;
+  }
+
+  function validarTelefono() {
+    const telefono = elements.telefono.value;
+    const regex = /^\d+$/;
+    const prefijos = ['0412', '0414', '0416', '0424', '0426', '0422'];
+
+    if (telefono.trim() === '') {
+      showError(elements.telefono, 'El teléfono es obligatorio.');
+      return false;
+    }
+
+    if (!regex.test(telefono)) {
+      showError(elements.telefono, 'El teléfono debe contener solo números.');
+      return false;
+    }
+
+    if (telefono.length !== 11) {
+      showError(elements.telefono, 'El teléfono debe tener 11 dígitos.');
+      return false;
+    }
+
+    const prefijo = telefono.substring(0, 4);
+    if (!prefijos.includes(prefijo)) {
+      showError(elements.telefono, 'El prefijo del teléfono no es válido (0412, 0414, 0416, 0422, 0424, 0426).');
+      return false;
+    }
+
+    clearError(elements.telefono);
+    return true;
+  }
+
+  async function verificarTelefono() {
+    if (!validarTelefono()) return false;
+
+    try {
+      const response = await apiClient.get(`a/usuarios/verificar_telefono?telefono=${encodeURIComponent(elements.telefono.value)}`);
+      if (response.existe) {
+        showError(elements.telefono, 'El teléfono ingresado ya se encuentra registrado.');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error al verificar teléfono:', error);
+    }
+
     return true;
   }
 
@@ -178,9 +252,13 @@ export const initCrearUsuarios = () => {
     return true;
   }
 
+  elements.cedula.addEventListener('input', validarCedula);
+  elements.cedula.addEventListener('blur', verificarCedula);
   elements.nombre.addEventListener('input', validarNombre);
   elements.apellido.addEventListener('input', validarApellido);
   elements.correo.addEventListener('blur', validarCorreo);
+  elements.telefono.addEventListener('input', validarTelefono);
+  elements.telefono.addEventListener('blur', verificarTelefono);
   elements.password.addEventListener('input', validarPassword);
   elements.rol_id.addEventListener('input', validarRol);
   elements.estado.addEventListener('input', validarEstado);
@@ -189,15 +267,21 @@ export const initCrearUsuarios = () => {
     e.preventDefault();
 
     const validaciones = [
+      validarCedula(),
       validarNombre(),
       validarApellido(),
       await validarCorreo(),
+      validarTelefono(),
       validarPassword(),
       validarRol(),
       validarEstado()
     ];
 
     if(validaciones.every(v => v === true)){
+      const cedulaOk = await verificarCedula();
+      const telefonoOk = await verificarTelefono();
+      if (!cedulaOk || !telefonoOk) return;
+
       const btnSubmit = form.querySelector('[type="submit"]') || document.getElementById('btn-guardar');
       const originalBtnText = btnSubmit.innerHTML;
 
@@ -206,9 +290,12 @@ export const initCrearUsuarios = () => {
 
       try{
         const payload = {
+          tipo_cedula: form.elements.tipo_cedula.value,
+          cedula: form.elements.cedula.value.trim(),
           nombre: form.elements.nombre.value.trim(),
           apellido: form.elements.apellido.value.trim(),
           correo: form.elements.correo.value.trim(),
+          telefono: form.elements.telefono.value.trim(),
           password: form.elements.password.value,
           rol_id: parseInt(form.elements.rol_id.value),
           estado: form.elements.estado.value
@@ -217,8 +304,8 @@ export const initCrearUsuarios = () => {
         const response = await apiClient.post('a/usuarios/registrar_usuarios', payload);
 
         CevAlert.success({
-          title: "Registro Exitoso",
-          text: "El usuario ha sido registrado exitosamente.",
+          title: 'Registro Exitoso',
+          text: 'El usuario ha sido registrado exitosamente.',
           confirmButtonText: "Aceptar"
         });
         form.reset();
