@@ -19,7 +19,8 @@ COPY composer.json ./
 # COPY composer.lock ./
 
 # 6. Instalamos dependencias limpias e ignoramos requerimientos locales de plataforma
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-progress --ignore-platform-reqs
+# 6. Instalamos dependencias limpias e ignoramos auditorías y requerimientos locales de plataforma
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-progress --ignore-platform-reqs --no-audit
 
 # 7. Copiamos el resto de los archivos del proyecto (respetando el .dockerignore)
 COPY . .
