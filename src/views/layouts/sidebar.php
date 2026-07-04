@@ -36,12 +36,14 @@ $menusSidebar = [
                 ],
             ],
             [
-                'id' => 'subPlanificacionAcademica',
-                'titulo' => 'Planificación Académica',
+                'id' => 'subSecciones',
+                'titulo' => 'Secciones',
                 'icono' => 'bi-calendar2-week',
-                'base' => '/a/planificacion-academica',
-                'items' => [],
-                'placeholder' => true,
+                'base' => '/a/secciones',
+                'items' => [
+                    ['href' => '/a/secciones/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/secciones/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
             ],
             [
                 'id' => 'subEvaluacionesNotas',
@@ -50,6 +52,29 @@ $menusSidebar = [
                 'base' => '/a/evaluaciones-notas',
                 'items' => [],
                 'placeholder' => true,
+            ],
+        ],
+    ],
+    [
+        'grupo' => 'Parámetros Académicos',
+        'items' => [
+            [
+                'id' => 'subPeriodos',
+                'titulo' => 'Períodos Académicos',
+                'icono' => 'bi-calendar-range',
+                'base' => '/a/periodos',
+                'items' => [
+                    ['href' => '/a/periodos/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/periodos/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
+            ],
+            [
+                'id' => 'subTrayectos',
+                'titulo' => 'Trayectos y Fases',
+                'icono' => 'bi-diagram-3',
+                'base' => '/a/trayectos',
+                'url' => '/a/trayectos/consultar',
+                'items' => [],
             ],
         ],
     ],
