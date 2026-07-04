@@ -1,28 +1,26 @@
 # 1. Usamos la imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# 2. Instalamos las herramientas necesarias del sistema y extensiones zip para Composer
-RUN apt-get update && apt-get install -y \
+# 2. Actualizamos paquetes e instalamos git y unzip (obligando a decir 'sí' con -y)
+RUN apt-get update && apt-get install -q -y \
     git \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Descargamos e instalamos Composer de forma oficial dentro del contenedor
+# 3. Traemos Composer de su imagen oficial de forma limpia
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. Copiamos los archivos de dependencias primero para optimizar la caché de Docker
+# 4. Copiamos el archivo de dependencias primero
 COPY composer.json /var/www/html/
-# Si tienes un composer.lock, descomenta la siguiente línea quitando el '#'
-# COPY composer.lock /var/www/html/
 
-# 5. Instalamos las dependencias de Composer sin entornos de desarrollo y optimizando el autoloader
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-progress
+# 5. Ejecutamos composer install ignorando scripts de desarrollo
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-progress --ignore-platform-reqs
 
-# 6. Copiamos el resto del código de nuestro proyecto
+# 6. Copiamos todo el código restante al servidor
 COPY . /var/www/html/
 
-# 7. Activamos el módulo de reescritura de URLs para tu Router
+# 7. Activamos reescritura de URLs para el Router
 RUN a2enmod rewrite
 
-# 8. Exponemos el puerto 80
+# 8. Exponemos el puerto
 EXPOSE 80
