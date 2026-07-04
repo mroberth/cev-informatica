@@ -27,10 +27,31 @@ const inicializarDataTable = () => {
     },
     responsive: true,
     autoWidth: false,
+    order: [[2, 'asc'], [3, 'asc'], [0, 'asc']], // Ordena por Trayecto, luego Fase, luego Código
     pageLength: 10,
-    order: [[2, 'asc'], [3, 'asc'], [0, 'asc']],
+    dom: '<"d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"Bf>rt<"d-flex flex-wrap align-items-center justify-content-between gap-2 pt-3"<"d-inline-flex"i><"d-inline-flex"p>>',
+    buttons: [
+      {
+        extend: 'excelHtml5',
+        text: '<i class="bi bi-file-earmark-excel me-1"></i>Excel',
+        className: 'btn btn-success',
+        titleAttr: 'Exportar a Excel',
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4] // Exporta todo menos las Acciones
+        }
+      },
+      {
+        extend: 'pdfHtml5',
+        text: '<i class="bi bi-file-earmark-pdf me-1"></i>PDF',
+        className: 'btn btn-danger',
+        titleAttr: 'Exportar a PDF',
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4] // Exporta todo menos las Acciones
+        }
+      }
+    ],
     initComplete: function () {
-      initEditarUC(dataTable);
+      initEditarUC(dataTable); // ← ¡Esto mantiene vivo tu botón de editar!
     }
   });
 };
