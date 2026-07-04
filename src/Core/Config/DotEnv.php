@@ -6,10 +6,18 @@ class DotEnv
 {
     /**
      * Carga y procesa el archivo .env e inyecta las variables en el sistema.
+     * En producción (Render), si el archivo físico no existe pero las variables
+     * ya están en el sistema operativo, continúa sin arrojar error.
      */
     public static function cargar(string $rutaFisica): void
     {
         if (!file_exists($rutaFisica)) {
+            // Evaluamos si ya existen variables clave configuradas en el entorno por Render.
+            // Puedes cambiar 'DB_HOST' por cualquier variable obligatoria que uses para conectar tu BD.
+            if (isset($_ENV['DB_HOST']) || isset($_SERVER['DB_HOST']) || getenv('DB_HOST') !== false) {
+                return; // Estamos en producción con variables inyectadas nativamente. Todo bien.
+            }
+
             throw new \RuntimeException("El archivo de entorno .env no existe en la ruta: {$rutaFisica}");
         }
 
