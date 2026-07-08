@@ -86,6 +86,21 @@ export const initCrearPeriodo = () => {
   }
 
   elements.nombre.addEventListener('input', validarNombre);
+  elements.nombre.addEventListener('blur', async () => {
+    const val = elements.nombre.value.trim().toUpperCase();
+    if (!val) return;
+
+    if (!validarNombre()) return;
+
+    try {
+      const response = await apiClient.get(`a/periodos/verificar_nombre?nombre=${encodeURIComponent(val)}`);
+      if (response.existe) {
+        showError(elements.nombre, 'El nombre del período ya existe.');
+      }
+    } catch (error) {
+      console.error('Error al verificar nombre del período:', error);
+    }
+  });
   elements.fecha_inicio.addEventListener('change', () => {
     validarFechaInicio();
     if (elements.fecha_fin.value) validarFechaFin();
