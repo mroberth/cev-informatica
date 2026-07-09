@@ -14,7 +14,15 @@ const inicializarDataTable = () => {
       { data: 'codigo' },
       { data: 'nombre' },
       { data: 'trayecto' },
-      { data: 'fase' },
+      {
+        data: 'fases_nombres',
+        render: (data) => {
+          if (!data) return '';
+          return data.split(', ').map(f =>
+            `<span class="badge bg-info text-white me-1">${f}</span>`
+          ).join('');
+        },
+      },
       { data: 'unidades_credito' },
       {
         data: null,
@@ -27,7 +35,7 @@ const inicializarDataTable = () => {
     },
     responsive: true,
     autoWidth: false,
-    order: [[2, 'asc'], [3, 'asc'], [0, 'asc']], // Ordena por Trayecto, luego Fase, luego Código
+    order: [[2, 'asc'], [3, 'asc'], [0, 'asc']],
     pageLength: 10,
     dom: '<"d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"Bf>rt<"d-flex flex-wrap align-items-center justify-content-between gap-2 pt-3"<"d-inline-flex"i><"d-inline-flex"p>>',
     buttons: [
@@ -37,7 +45,7 @@ const inicializarDataTable = () => {
         className: 'btn btn-success',
         titleAttr: 'Exportar a Excel',
         exportOptions: {
-          columns: [0, 1, 2, 3, 4] // Exporta todo menos las Acciones
+          columns: [0, 1, 2, 3, 4]
         }
       },
       {
@@ -46,12 +54,12 @@ const inicializarDataTable = () => {
         className: 'btn btn-danger',
         titleAttr: 'Exportar a PDF',
         exportOptions: {
-          columns: [0, 1, 2, 3, 4] // Exporta todo menos las Acciones
+          columns: [0, 1, 2, 3, 4]
         }
       }
     ],
     initComplete: function () {
-      initEditarUC(dataTable); // ← ¡Esto mantiene vivo tu botón de editar!
+      initEditarUC(dataTable);
     }
   });
 };
@@ -68,7 +76,7 @@ const initEditarUC = (dataTable) => {
   const form = document.getElementById('formEditarUC');
   const idInput = document.getElementById('editar_id');
   const idTrayecto = document.getElementById('editar_id_trayecto');
-  const idFase = document.getElementById('editar_id_fase');
+  const fasesContainer = document.getElementById('editar_fases_container');
   const codigoInput = document.getElementById('editar_codigo');
   const nombreInput = document.getElementById('editar_nombre');
   const ucInput = document.getElementById('editar_unidades_credito');
@@ -107,21 +115,42 @@ const initEditarUC = (dataTable) => {
     }
   };
 
+  const renderFasesCheckboxes = (fases, fasesSeleccionadas = []) => {
+    fasesContainer.innerHTML = '';
+    if (fases.length === 0) {
+      fasesContainer.innerHTML = '<span class="text-muted small">No hay fases para este trayecto</span>';
+      return;
+    }
+    fases.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'form-check form-check-inline';
+      const input = document.createElement('input');
+      input.className = 'form-check-input';
+      input.type = 'checkbox';
+      input.id = `editar_fase_${f.id}`;
+      input.value = f.id;
+      if (fasesSeleccionadas.includes(f.id)) {
+        input.checked = true;
+      }
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.htmlFor = `editar_fase_${f.id}`;
+      label.textContent = f.nombre;
+      div.appendChild(input);
+      div.appendChild(label);
+      fasesContainer.appendChild(div);
+    });
+  };
+
   idTrayecto.addEventListener('change', async () => {
     const val = idTrayecto.value;
-    idFase.innerHTML = '<option value="">Cargando...</option>';
+    fasesContainer.innerHTML = '<span class="text-muted small">Cargando...</span>';
     if (!val) {
-      idFase.innerHTML = '<option value="">Primero selecciona un trayecto</option>';
+      fasesContainer.innerHTML = '<span class="text-muted small">Primero selecciona un trayecto</span>';
       return;
     }
     const fases = await cargarFasesEdit(val);
-    idFase.innerHTML = '<option value="">Seleccionar fase</option>';
-    fases.forEach(f => {
-      const opt = document.createElement('option');
-      opt.value = f.id;
-      opt.textContent = f.nombre;
-      idFase.appendChild(opt);
-    });
+    renderFasesCheckboxes(fases);
   });
 
   const showError = (field, msg) => {
@@ -138,21 +167,18 @@ const initEditarUC = (dataTable) => {
     field.classList.add('is-valid');
   };
 
-  function validarTrayecto() {
-    if (!idTrayecto.value) {
-      showError(idTrayecto, 'Debes seleccionar un trayecto.');
+  function validarFases() {
+    const checked = fasesContainer.querySelectorAll('input[type="checkbox"]:checked');
+    const errorEl = document.getElementById('editar_fasesError');
+    if (checked.length === 0) {
+      if (errorEl) errorEl.textContent = 'Debes seleccionar al menos una fase.';
+      fasesContainer.classList.add('is-invalid');
+      fasesContainer.classList.remove('is-valid');
       return false;
     }
-    clearError(idTrayecto);
-    return true;
-  }
-
-  function validarFase() {
-    if (!idFase.value) {
-      showError(idFase, 'Debes seleccionar una fase.');
-      return false;
-    }
-    clearError(idFase);
+    if (errorEl) errorEl.textContent = '';
+    fasesContainer.classList.remove('is-invalid');
+    fasesContainer.classList.add('is-valid');
     return true;
   }
 
@@ -219,15 +245,9 @@ const initEditarUC = (dataTable) => {
     await cargarTrayectosEdit();
     idTrayecto.value = data.id_trayecto;
 
+    const fasesIds = data.fases_ids ? data.fases_ids.split(',').map(Number) : [];
     const fases = await cargarFasesEdit(data.id_trayecto);
-    idFase.innerHTML = '<option value="">Seleccionar fase</option>';
-    fases.forEach(f => {
-      const opt = document.createElement('option');
-      opt.value = f.id;
-      opt.textContent = f.nombre;
-      if (f.id == data.id_fase) opt.selected = true;
-      idFase.appendChild(opt);
-    });
+    renderFasesCheckboxes(fases, fasesIds);
 
     new bootstrap.Modal(modal).show();
   });
@@ -236,8 +256,7 @@ const initEditarUC = (dataTable) => {
     e.preventDefault();
 
     const validaciones = [
-      validarTrayecto(),
-      validarFase(),
+      validarFases(),
       validarCodigo(),
       validarNombre(),
       validarUC(),
@@ -245,15 +264,18 @@ const initEditarUC = (dataTable) => {
 
     if (!validaciones.every(v => v === true)) return;
 
-    const btnSubmit = form.querySelector('[type="submit"]');
+    const btnSubmit = document.querySelector('button[form="formEditarUC"]');
     const originalText = btnSubmit.innerHTML;
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Actualizando...';
 
     try {
+      const fasesSeleccionadas = [...fasesContainer.querySelectorAll('input[type="checkbox"]:checked')]
+        .map(cb => parseInt(cb.value));
+
       const payload = {
         id: parseInt(idInput.value),
-        id_fase: parseInt(idFase.value),
+        fases: fasesSeleccionadas,
         codigo: codigoInput.value.trim(),
         nombre: nombreInput.value.trim(),
         unidades_credito: parseInt(ucInput.value),

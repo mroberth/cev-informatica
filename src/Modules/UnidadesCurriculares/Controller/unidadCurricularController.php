@@ -55,9 +55,11 @@ function registrar_unidad_curricular(): void {
         return;
     }
 
+    $fases = array_map('intval', $input['fases'] ?? []);
+
     $ucDTO = new UnidadCurricularDTO(
         0,
-        (int) ($input['id_fase'] ?? 0),
+        $fases,
         (string) ($input['codigo'] ?? ''),
         (string) ($input['nombre'] ?? ''),
         (int) ($input['unidades_credito'] ?? 0),
@@ -95,8 +97,13 @@ function registrar_unidad_curricular(): void {
 
 function consultar_uc_data(): void {
     header('Content-Type: application/json; charset=utf-8');
-    $repositorio = new UnidadCurricularRepository();
-    echo json_encode(['data' => $repositorio->consultar()]);
+    try {
+        $repositorio = new UnidadCurricularRepository();
+        echo json_encode(['data' => $repositorio->consultar()]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
     exit;
 }
 
@@ -135,9 +142,11 @@ function actualizar_unidad_curricular(): void {
         return;
     }
 
+    $fases = array_map('intval', $input['fases'] ?? []);
+
     $ucDTO = new UnidadCurricularDTO(
         $id,
-        (int) ($input['id_fase'] ?? 0),
+        $fases,
         (string) ($input['codigo'] ?? ''),
         (string) ($input['nombre'] ?? ''),
         (int) ($input['unidades_credito'] ?? 0),

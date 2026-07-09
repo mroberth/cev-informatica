@@ -18,7 +18,7 @@
               <th>Código</th>
               <th>Nombre</th>
               <th>Trayecto</th>
-              <th>Fase</th>
+              <th>Fases</th>
               <th>U. Crédito</th>
               <th>Acciones</th>
             </tr>
@@ -59,16 +59,13 @@
             </div>
 
             <div class="col-md-6 mb-2">
-              <label for="editar_id_fase" class="form-label fw-semibold text-secondary small">
-                <i class="bi bi-columns me-1"></i>Fase
+              <label class="form-label fw-semibold text-secondary small">
+                <i class="bi bi-columns me-1"></i>Fases
               </label>
-              <div class="input-group has-validation">
-                <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-columns"></i></span>
-                <select class="form-select border-start-0 ps-0" id="editar_id_fase">
-                  <option value="">Primero selecciona un trayecto</option>
-                </select>
-                <div class="invalid-feedback" id="editar_id_faseError"></div>
+              <div id="editar_fases_container" class="border rounded p-3 bg-light" style="min-height: 44px;">
+                <span class="text-muted small">Primero selecciona un trayecto</span>
               </div>
+              <div class="invalid-feedback" id="editar_fasesError"></div>
             </div>
 
             <div class="col-md-6 mb-2">

@@ -10,27 +10,46 @@ export const initCrearUC = () => {
   cargarTrayectos('id_trayecto');
 
   const idTrayecto = document.getElementById('id_trayecto');
-  const idFase = document.getElementById('id_fase');
+  const fasesContainer = document.getElementById('fases_container');
+
+  const fasesCheckboxes = new Map();
 
   idTrayecto.addEventListener('change', async () => {
     const val = idTrayecto.value;
-    idFase.innerHTML = '<option value="">Cargando...</option>';
+    fasesCheckboxes.clear();
+    fasesContainer.innerHTML = '<span class="text-muted small">Cargando...</span>';
     if (!val) {
-      idFase.innerHTML = '<option value="">Primero selecciona un trayecto</option>';
+      fasesContainer.innerHTML = '<span class="text-muted small">Primero selecciona un trayecto</span>';
       return;
     }
     try {
       const response = await apiClient.get(`a/unidades-curriculares/obtener_fases?id_trayecto=${val}`);
       const fases = response.data || [];
-      idFase.innerHTML = '<option value="">Seleccionar fase</option>';
+      if (fases.length === 0) {
+        fasesContainer.innerHTML = '<span class="text-muted small">No hay fases para este trayecto</span>';
+        return;
+      }
+      fasesContainer.innerHTML = '';
       fases.forEach(f => {
-        const opt = document.createElement('option');
-        opt.value = f.id;
-        opt.textContent = f.nombre;
-        idFase.appendChild(opt);
+        const div = document.createElement('div');
+        div.className = 'form-check form-check-inline';
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'checkbox';
+        input.id = `fase_${f.id}`;
+        input.value = f.id;
+        input.name = 'fases[]';
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `fase_${f.id}`;
+        label.textContent = f.nombre;
+        div.appendChild(input);
+        div.appendChild(label);
+        fasesContainer.appendChild(div);
+        fasesCheckboxes.set(f.id, input);
       });
     } catch {
-      idFase.innerHTML = '<option value="">Error al cargar fases</option>';
+      fasesContainer.innerHTML = '<span class="text-muted small">Error al cargar fases</span>';
     }
   });
 
@@ -57,12 +76,18 @@ export const initCrearUC = () => {
     return true;
   }
 
-  function validarFase() {
-    if (!idFase.value) {
-      showError(idFase, 'Debes seleccionar una fase.');
+  function validarFases() {
+    const checked = [...fasesCheckboxes.values()].some(cb => cb.checked);
+    const errorEl = document.getElementById('fasesError');
+    if (!checked) {
+      if (errorEl) errorEl.textContent = 'Debes seleccionar al menos una fase.';
+      fasesContainer.classList.add('is-invalid');
+      fasesContainer.classList.remove('is-valid');
       return false;
     }
-    clearError(idFase);
+    if (errorEl) errorEl.textContent = '';
+    fasesContainer.classList.remove('is-invalid');
+    fasesContainer.classList.add('is-valid');
     return true;
   }
 
@@ -142,7 +167,7 @@ export const initCrearUC = () => {
 
     const validaciones = [
       validarTrayecto(),
-      validarFase(),
+      validarFases(),
       validarCodigo(),
       validarNombre(),
       validarUC(),
@@ -159,8 +184,12 @@ export const initCrearUC = () => {
     btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Guardando...';
 
     try {
+      const fasesSeleccionadas = [...fasesCheckboxes.values()]
+        .filter(cb => cb.checked)
+        .map(cb => parseInt(cb.value));
+
       const payload = {
-        id_fase: parseInt(idFase.value),
+        fases: fasesSeleccionadas,
         codigo: codigoInput.value.trim(),
         nombre: nombreInput.value.trim(),
         unidades_credito: parseInt(ucInput.value),
@@ -175,7 +204,8 @@ export const initCrearUC = () => {
       });
       form.reset();
       form.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
-      idFase.innerHTML = '<option value="">Primero selecciona un trayecto</option>';
+      fasesContainer.innerHTML = '<span class="text-muted small">Primero selecciona un trayecto</span>';
+      fasesContainer.classList.remove('is-invalid', 'is-valid');
     } catch (error) {
       CevAlert.error({
         title: 'Error al guardar',

@@ -1,0 +1,273 @@
+:root {
+  --cev-bg: #07111f;
+  --cev-surface: rgba(8, 18, 32, 0.9);
+  --cev-surface-soft: rgba(255, 255, 255, 0.04);
+  --cev-border: rgba(140, 184, 255, 0.14);
+  --cev-accent: #25d4c7;
+  --cev-accent-2: #5da7ff;
+  --cev-text: #e8f1ff;
+  --cev-muted: rgba(232, 241, 255, 0.68);
+  --cev-shadow: 0 30px 90px rgba(3, 10, 20, 0.45);
+}
+
+.cev-login-page {
+  background:
+    radial-gradient(circle at top left, rgba(17, 95, 170, 0.08), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(37, 212, 199, 0.08), transparent 30%),
+    linear-gradient(135deg, #f5f8fc 0%, #ebf1f7 100%);
+}
+
+.cev-login-shell {
+  min-height: 100vh;
+}
+
+.cev-login-panel {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.cev-login-panel--form {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(249, 252, 255, 0.99)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.82));
+  border-right: 1px solid rgba(15, 37, 64, 0.08);
+}
+
+.cev-login-panel--tech {
+  background:
+    linear-gradient(160deg, #06101b 0%, #0b1724 56%, #040a12 100%);
+  color: var(--cev-text);
+}
+
+.cev-login-panel--tech::before,
+.cev-login-panel--tech::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cev-login-panel--tech::before {
+  background-image:
+    linear-gradient(rgba(93, 167, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93, 167, 255, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), transparent 100%);
+}
+
+.cev-login-panel--tech::after {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(37, 212, 199, 0.12), transparent 18%),
+    radial-gradient(circle at 80% 30%, rgba(93, 167, 255, 0.1), transparent 20%),
+    radial-gradient(circle at 60% 78%, rgba(56, 248, 154, 0.08), transparent 22%);
+  opacity: 0.7;
+}
+
+.cev-tech-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cev-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.cev-code-window {
+  border: 1px solid rgba(140, 184, 255, 0.14);
+  border-radius: 1.4rem;
+  background: rgba(4, 11, 20, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), var(--cev-shadow);
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+}
+
+.cev-code-window__bar {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cev-code-window__dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.cev-code-window__dot--red { background: #ff5f57; }
+.cev-code-window__dot--amber { background: #febc2e; }
+.cev-code-window__dot--green { background: #28c840; }
+
+.cev-code-window__body {
+  padding: 1.25rem 1.25rem 1.4rem;
+  font-family: Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #ccf7ea;
+}
+
+.cev-code-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.cev-code-keyword { color: #5da7ff; }
+.cev-code-string { color: #6ef0b1; }
+.cev-code-comment { color: rgba(204, 247, 234, 0.56); }
+.cev-code-accent { color: #25d4c7; }
+
+.cev-form-card {
+  max-width: 620px;
+  width: 100%;
+}
+
+.cev-form-backdrop {
+  border: 1px solid rgba(10, 31, 54, 0.07);
+  border-radius: 1.65rem;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 24px 70px rgba(12, 30, 53, 0.1);
+  backdrop-filter: blur(18px);
+}
+
+.cev-form-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(37, 212, 199, 0.12), rgba(93, 167, 255, 0.12));
+  color: #0e2743;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.cev-login-title {
+  color: #10243d;
+  letter-spacing: -0.03em;
+}
+
+.cev-login-subtitle {
+  color: #5a6c84;
+}
+
+.cev-alert-auth {
+  border: 1px solid rgba(220, 53, 69, 0.12);
+  background: rgba(220, 53, 69, 0.08);
+  color: #842029;
+  border-radius: 0.9rem;
+}
+
+.cev-field {
+  margin-bottom: 1rem;
+}
+
+.cev-field-label {
+  margin-bottom: 0.55rem;
+}
+
+.cev-field-feedback {
+  margin-top: 0.42rem;
+  padding-left: 0.25rem;
+  min-height: 1.1rem;
+}
+
+.cev-input-group {
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 37, 64, 0.1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cev-input-group:focus-within {
+  border-color: rgba(37, 212, 199, 0.55);
+  box-shadow: 0 0 0 0.25rem rgba(37, 212, 199, 0.12), 0 14px 30px rgba(12, 30, 53, 0.08);
+  transform: translateY(-1px);
+}
+
+.cev-input-group .input-group-text,
+.cev-input-group .form-control,
+.cev-input-group .btn {
+  border: 0;
+  box-shadow: none;
+}
+
+.cev-input-group .input-group-text {
+  background: transparent;
+  color: #6d7f95;
+  padding-left: 1rem;
+  padding-right: 0.8rem;
+}
+
+.cev-input-group .form-control {
+  min-height: 3.45rem;
+  background: transparent;
+  color: #10243d;
+  padding-left: 0.1rem;
+  padding-right: 0.95rem;
+}
+
+.cev-input-group .form-control::placeholder {
+  color: #90a2b8;
+}
+
+.cev-input-group .form-control:focus {
+  background: transparent;
+}
+
+.cev-toggle-btn {
+  padding-left: 0.9rem;
+  padding-right: 1rem;
+  color: #6d7f95;
+  background: transparent;
+}
+
+.cev-btn-login {
+  border: 0;
+  border-radius: 0.95rem;
+  padding: 0.95rem 1.2rem;
+  background: linear-gradient(135deg, #0b84ff 0%, #25d4c7 100%);
+  box-shadow: 0 18px 35px rgba(11, 132, 255, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.cev-btn-login:hover,
+.cev-btn-login:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 40px rgba(11, 132, 255, 0.3);
+  filter: saturate(1.05);
+}
+
+.cev-btn-back {
+  color: #5a6c84;
+}
+
+@media (min-width: 992px) {
+  .cev-login-panel--form {
+    border-right: 1px solid rgba(15, 37, 64, 0.08);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .cev-login-panel {
+    min-height: auto;
+  }
+
+  .cev-login-panel--tech {
+    min-height: 26rem;
+  }
+
+  .cev-form-backdrop {
+    border-radius: 1.5rem;
+  }
+}

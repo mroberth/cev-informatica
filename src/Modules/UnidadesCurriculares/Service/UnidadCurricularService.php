@@ -9,16 +9,21 @@ class UnidadCurricularService {
     private const CODIGO_REGEX = '/^[A-Za-z0-9\-]+$/';
 
     public function validar(UnidadCurricularDTO $uc): UnidadCurricularDTO {
-        $this->validarIdFase($uc->getIdFase());
+        $this->validarFases($uc->getFases());
         $this->validarCodigo($uc->getCodigo());
         $this->validarNombre($uc->getNombre());
         $this->validarUnidadesCredito($uc->getUnidadesCredito());
         return $uc;
     }
 
-    private function validarIdFase(int $idFase): void {
-        if ($idFase <= 0) {
-            throw new Exception('La fase es obligatoria.', 400);
+    private function validarFases(array $fases): void {
+        if (empty($fases)) {
+            throw new Exception('Debe seleccionar al menos una fase.', 400);
+        }
+        foreach ($fases as $faseId) {
+            if (!is_int($faseId) || $faseId <= 0) {
+                throw new Exception('ID de fase inválido.', 400);
+            }
         }
     }
 
