@@ -46,6 +46,16 @@ $menusSidebar = [
                 ],
             ],
             [
+                'id' => 'subAsignacionDocente',
+                'titulo' => 'Asignación Docente',
+                'icono' => 'bi-person-plus',
+                'base' => '/a/asignacion-docente',
+                'items' => [
+                    ['href' => '/a/asignacion-docente/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/asignacion-docente/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
+            ],
+            [
                 'id' => 'subEvaluacionesNotas',
                 'titulo' => 'Evaluaciones y Notas',
                 'icono' => 'bi-journal-text',
