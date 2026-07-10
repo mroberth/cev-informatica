@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-07-2026 a las 21:45:24
+-- Tiempo de generación: 10-07-2026 a las 21:20:10
 -- Versión del servidor: 8.4.3
 -- Versión de PHP: 8.2.31
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `cev_security`
 --
+CREATE DATABASE IF NOT EXISTS `cev_security` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `cev_security`;
 
 -- --------------------------------------------------------
 
@@ -83,7 +85,65 @@ INSERT INTO `bitacora` (`id`, `id_usuario`, `accion`, `descripcion`, `direccion_
 (39, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 17:40:29'),
 (40, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 18:52:26'),
 (41, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 20:06:49'),
-(42, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 21:41:12');
+(42, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 21:41:12'),
+(43, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 22:28:24'),
+(44, 1, 'REFRESH_TOKEN', 'Token renovado para: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-06 22:42:36'),
+(45, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 16:25:21'),
+(46, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 16:39:01'),
+(47, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 17:32:49'),
+(48, 1, 'ACTUALIZAR', 'Período académico actualizado: 2026-II (ID: 2)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 17:33:18'),
+(49, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 18:13:56'),
+(50, 1, 'CREAR', 'Docente registrado (ID Usuario: 8, ID Docente: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 18:14:10'),
+(51, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 18:34:36'),
+(52, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 18:50:43'),
+(53, 1, 'REFRESH_TOKEN', 'Token renovado para: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:04:44'),
+(54, 1, 'ACTUALIZAR', 'Docente actualizado (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:04:50'),
+(55, 1, 'ACTUALIZAR', 'Docente actualizado (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:04:56'),
+(56, 1, 'CREAR', 'Usuario creado: juan@gmail.com (ID: 9)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:06:04'),
+(57, 1, 'CREAR', 'Docente registrado (ID Usuario: 9, ID Docente: 2)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:06:16'),
+(58, 1, 'CREAR', 'Usuario creado: matosjesus464@gmail.com (ID: 10)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:17:04'),
+(59, 1, 'CREAR', 'Estudiante registrado (ID Usuario: 10, ID Estudiante: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:17:12'),
+(60, 1, 'ACTUALIZAR', 'Estudiante actualizado (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:17:21'),
+(61, 1, 'ACTUALIZAR', 'Estudiante actualizado (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:17:25'),
+(62, 1, 'ACTUALIZAR', 'Estudiante actualizado (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:17:31'),
+(63, 1, 'REFRESH_TOKEN', 'Token renovado para: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:18:54'),
+(64, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-08 19:26:11'),
+(65, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:01:17'),
+(66, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:01:25'),
+(67, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:15:28'),
+(68, 1, 'CREAR', 'Sección creada: IN-2101 (ID: 2)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:16:16'),
+(69, 1, 'CREAR', 'Sección creada: IN-3101 (ID: 3)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:16:23'),
+(70, 1, 'CREAR', 'Sección creada: IN-4101 (ID: 4)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:16:32'),
+(71, 1, 'REFRESH_TOKEN', 'Token renovado para: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:29:54'),
+(72, 1, 'CREAR', 'Unidad Curricular creada: IDI-01 - Idiomas-I (ID: 2)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:31:05'),
+(73, 1, 'ACTUALIZAR', 'Unidad Curricular actualizada: MAT-01 - Matematica I (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 17:36:26'),
+(74, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:05:21'),
+(75, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:05:27'),
+(76, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:11:56'),
+(77, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:12:01'),
+(78, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:31:51'),
+(79, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:38:45'),
+(80, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:38:49'),
+(81, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-09 19:51:01'),
+(82, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 00:00:26'),
+(83, 1, 'CREAR', 'Asignaciones guardadas para sección IN-1101', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 00:10:25'),
+(84, 1, 'ELIMINAR', 'Asignación docente eliminada (ID: 1)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 00:10:53'),
+(85, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 14:01:48'),
+(86, 1, 'LOGOUT', 'Cierre de sesión: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 14:02:08'),
+(87, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 19:25:19'),
+(88, 1, 'CREAR', 'Asignaciones guardadas para sección IN-1101', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 19:37:32'),
+(89, 1, 'REFRESH_TOKEN', 'Token renovado para: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 19:39:20'),
+(90, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:10:20'),
+(91, 1, 'CREAR', 'Inscripciones guardadas para sección IN-1101 (Array estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:20:28'),
+(92, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:31:34'),
+(93, 1, 'CREAR', 'Inscripciones guardadas para sección IN-1101 (Array estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:31:43'),
+(94, 1, 'CREAR', 'Inscripciones guardadas para sección IN-1101 (Array estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:32:17'),
+(95, 1, 'CREAR', 'Inscripciones guardadas para sección IN-1101 (Array estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:32:29'),
+(96, 1, 'CREAR', 'Inscripciones guardadas para sección IN-2101 (1 estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:39:01'),
+(97, 1, 'CREAR', 'Inscripciones guardadas para sección IN-3101 (1 estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:39:13'),
+(98, 1, 'CREAR', 'Inscripciones guardadas para sección IN-4101 (1 estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:39:21'),
+(99, 1, 'LOGIN_EXITOSO', 'Inicio de sesión exitoso: admin@gmail.com', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:56:18'),
+(100, 1, 'CREAR', 'Inscripciones guardadas para sección IN-1101 (1 estudiantes)', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:153.0) Gecko/20100101 Firefox/153.0', '2026-07-10 20:57:03');
 
 -- --------------------------------------------------------
 
@@ -150,7 +210,15 @@ INSERT INTO `jwt_blacklist` (`id`, `token_signature_hash`, `expiracion`, `creado
 (47, 'c4b535de1da24a96652addb14246cb437da52feb9dbe24b9df9300a58ba6f9c5', '2026-07-04 19:08:45', '2026-07-04 15:04:32'),
 (48, '3560056748167dea341c92e7774b772cd3f927ba62b075a3ddd8338864d921f5', '2026-07-04 19:53:13', '2026-07-04 15:42:07'),
 (49, '39d271de1e873046750780dda961398f451867a3503e0a706af7e9b88c46ea18', '2026-07-05 03:09:18', '2026-07-04 22:55:45'),
-(50, '17ae4b583d5526b3ff9e34ff79a0e05c11185afd5a11abe0426f054e95d39eea', '2026-07-06 21:55:18', '2026-07-06 17:40:29');
+(50, '17ae4b583d5526b3ff9e34ff79a0e05c11185afd5a11abe0426f054e95d39eea', '2026-07-06 21:55:18', '2026-07-06 17:40:29'),
+(51, 'd27ea54f1a0517d19d58f76c9b8077fd933e8c8e68fe014c1d3b5277e227a780', '2026-07-08 20:40:21', '2026-07-08 16:39:01'),
+(52, 'fe257884d2d1ed7784c07b4cdc8d1d5e7259f6f53a7638ac755b95e9e1987319', '2026-07-08 23:33:54', '2026-07-08 19:26:11'),
+(53, '4967643e1c1e30c06aa339b85d66c0aa0f6b56e603a05c76ff4dab84cb715f2a', '2026-07-09 21:16:17', '2026-07-09 17:01:25'),
+(54, '6a3ca808ce654d64563e4e1696e7b232c357e2b4d4ec6ef7d04208e4cbe728d1', '2026-07-09 23:20:21', '2026-07-09 19:05:27'),
+(55, '35ff7143fb6427d04b49a89c3c96923b70ddcf4d44167fdfaf019768f06bccb1', '2026-07-09 23:26:56', '2026-07-09 19:12:01'),
+(56, 'de1a0c82d4446490adcf33a3427c899d0fe547774fd7006ae83151a742a4976f', '2026-07-09 23:46:50', '2026-07-09 19:38:45'),
+(57, 'af0035037729af6c54a21b68828757517d4be218c3bd28aa67dee54664b7981a', '2026-07-09 23:53:49', '2026-07-09 19:51:01'),
+(58, 'ce4f8e90d5a6577d978550797de0cc40edde30570a24601deb8d3a8d6fa705b4', '2026-07-10 18:16:48', '2026-07-10 14:02:08');
 
 -- --------------------------------------------------------
 
@@ -416,7 +484,30 @@ INSERT INTO `refresh_tokens` (`id`, `usuario_id`, `token_hash`, `expiracion`, `r
 (172, 1, '16375d082d579b873eefd320814be6602b14a734a5072b2617a993186565173a', '2026-07-13 21:40:18', 1, '2026-07-06 17:40:18'),
 (173, 1, '178fba12e7f3dd1d2a074487f4ad64fe0f5fdb69f67632bbe72b0520db546b31', '2026-07-13 22:52:26', 0, '2026-07-06 18:52:26'),
 (174, 1, '4ea53a29057e6898126c023b7a6a4fdbe9589b95d7bfaec4f71ba2db2e5d99b9', '2026-07-14 00:06:49', 0, '2026-07-06 20:06:49'),
-(175, 1, 'cdbc35d085c321ce8c52894760229953e761788bd811ce9f433f02a881103e9d', '2026-07-14 01:41:12', 0, '2026-07-06 21:41:12');
+(175, 1, 'cdbc35d085c321ce8c52894760229953e761788bd811ce9f433f02a881103e9d', '2026-07-14 01:41:12', 0, '2026-07-06 21:41:12'),
+(176, 1, 'c66a7ae7a8be5b9234fe9d88bc24cdf02d1c68fe99d82ba1336e1ccf375f8bae', '2026-07-14 02:28:24', 1, '2026-07-06 22:28:24'),
+(177, 1, 'abf4f05324d399c807a9602c3b9425dd1e85e6b2ac911ba6dcaf1b04cb7cd301', '2026-07-14 02:42:36', 0, '2026-07-06 22:42:36'),
+(178, 1, '2c9b1f0444a7803ce2f4e8f6a323e9cb33105db5f04088570ee4f0dd80a952cf', '2026-07-15 20:25:21', 1, '2026-07-08 16:25:21'),
+(179, 1, '004f85f51c32c135116986818dcfed0bbcb214c9ca566a4cd5d38bc41b17b46f', '2026-07-15 21:32:49', 0, '2026-07-08 17:32:49'),
+(180, 1, '4d8b5cbbd7c4617763f2e4c0ea1684a484423028d33cc931fd7f83ef37dd2afc', '2026-07-15 22:13:56', 0, '2026-07-08 18:13:56'),
+(181, 1, '858ad3fa54df60780246859eeaba17a8e72eb857d274dc4733c800a403643a09', '2026-07-15 22:34:36', 0, '2026-07-08 18:34:36'),
+(182, 1, 'ff57676df429177429b45e39731fe24fb4915c4cb3889f1b29dfbe859ad6befe', '2026-07-15 22:50:43', 1, '2026-07-08 18:50:43'),
+(183, 1, 'b05d6bf1b2868c640ca76b0890236d9d7db2f51166c028c5af8995e621a35068', '2026-07-15 23:04:44', 1, '2026-07-08 19:04:44'),
+(184, 1, '6ca418613a04a42e570666551aeb3765e3329acad1c145d2e2dbc5e8078174e7', '2026-07-15 23:18:54', 1, '2026-07-08 19:18:54'),
+(185, 1, '8ea78c5f29d05bd9f4cf448010d02cbe844cef390864271dcf465ba4388b0708', '2026-07-16 21:01:17', 1, '2026-07-09 17:01:17'),
+(186, 1, 'd1762b5cb61c580d934b3f2bcf2c7affb32b899183c1572f1c4e52795349c43c', '2026-07-16 21:15:28', 1, '2026-07-09 17:15:28'),
+(187, 1, 'cce7aac94b990cfb4ee5c99eed1334f993b17905a493f48c1650f2fb5dc2b5a4', '2026-07-16 21:29:54', 0, '2026-07-09 17:29:54'),
+(188, 1, '80410d4305375f847ffa44dc924f8dba08419d31e10464b7af1ae3595cd51189', '2026-07-16 23:05:21', 1, '2026-07-09 19:05:21'),
+(189, 1, '1d36ac20e4300be88836f5adb5ca045233c3603cb456ea03a8d5c5c0174b4244', '2026-07-16 23:11:56', 1, '2026-07-09 19:11:56'),
+(190, 1, '971d9423e62ce67bef1d28e94cc1350d67fe548c6909982a6c969802be9911a1', '2026-07-16 23:31:50', 1, '2026-07-09 19:31:50'),
+(191, 1, '764a2fb087f13ce6a1f4e8d3b0017cba3d6767de0f289db868231a7a350f045b', '2026-07-16 23:38:49', 1, '2026-07-09 19:38:49'),
+(192, 1, '8bb22efd71824b653d28f83014a322b9e276489624a7997b89275a955544c86c', '2026-07-17 04:00:26', 0, '2026-07-10 00:00:26'),
+(193, 1, 'f69371ea6ff7d9d01bbeb8243f5643306c9a4e6a6823aac1cb776641eab0be98', '2026-07-17 18:01:48', 1, '2026-07-10 14:01:48'),
+(194, 1, '069221a80d3d4a40827604c84e49b1b2b03ecbaf4395b67aa8e4c3c70b23e718', '2026-07-17 23:25:19', 1, '2026-07-10 19:25:19'),
+(195, 1, '6f57d01abe509d78371b36135bceec4e0deef56e10767958cdb8347b9183dff2', '2026-07-17 23:39:20', 0, '2026-07-10 19:39:20'),
+(196, 1, '68f3f2a61af8bb88227361485aa7a1091c19b0e5111ca997e9f26aa79cfc44a8', '2026-07-18 00:10:20', 0, '2026-07-10 20:10:20'),
+(197, 1, '3ed615b251231a6c79dcb6875efc0e6a1a34a7012661c568f8df7e2dab8a670b', '2026-07-18 00:31:34', 0, '2026-07-10 20:31:34'),
+(198, 1, '1748b6b9011fbc876c2fa77995c87e84ea5f1a15c5e73b6375b7ba95edf9ee48', '2026-07-18 00:56:18', 0, '2026-07-10 20:56:18');
 
 -- --------------------------------------------------------
 
@@ -489,7 +580,9 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `tipo_cedula`, `cedula`, `nombre`, `apellido`, `correo`, `telefono`, `password_hash`, `rol_id`, `estado`, `creado_en`, `actualizado_en`) VALUES
 (1, 'V', '28281433', 'Roberth', 'Matos', 'admin@gmail.com', '04129298008', '$2y$10$n8qwWPONScIsmRV1QAbbY.RHrR1BM3j4UF5SkN85SM.CBJNMyf0Rm', 1, 'activo', '2026-06-15 16:18:07', '2026-07-03 16:34:46'),
-(8, 'V', '28281432', 'Ricardo', 'Dos', 'ricardo@gmail.com', '04129298000', '$2y$10$wLlb5ElQ4J/DPF4RVd6KCu.3gskp6idbkvja3L3rn0x3mqu3eGzmS', 3, 'activo', '2026-07-03 16:49:07', '2026-07-03 16:49:07');
+(8, 'V', '28281432', 'Ricardo', 'Dos', 'ricardo@gmail.com', '04129298000', '$2y$10$wLlb5ElQ4J/DPF4RVd6KCu.3gskp6idbkvja3L3rn0x3mqu3eGzmS', 2, 'activo', '2026-07-03 16:49:07', '2026-07-06 22:37:49'),
+(9, 'V', '29737395', 'Juan', 'Musso', 'juan@gmail.com', '04125559292', '$2y$10$3pyZOnn9a1u4ttbWk3OLJ.kfxsriIV054NJ7E0G0pDjiOG6r.k.TG', 2, 'activo', '2026-07-08 19:06:04', '2026-07-08 19:06:04'),
+(10, 'V', '30995937', 'Jesus', 'Matos', 'matosjesus464@gmail.com', '04245304944', '$2y$10$SeBXA.EciLLLoLFJzYe0EOzU4Y2lvwprStpEPwX9wrHeb5MY4VEQS', 3, 'activo', '2026-07-08 19:17:04', '2026-07-08 19:17:04');
 
 --
 -- Índices para tablas volcadas
@@ -572,13 +665,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `jwt_blacklist`
 --
 ALTER TABLE `jwt_blacklist`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -596,7 +689,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `refresh_tokens`
 --
 ALTER TABLE `refresh_tokens`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -608,7 +701,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas

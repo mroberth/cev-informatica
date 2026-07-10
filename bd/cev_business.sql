@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-07-2026 a las 21:45:17
+-- Tiempo de generación: 10-07-2026 a las 21:20:22
 -- Versión del servidor: 8.4.3
 -- Versión de PHP: 8.2.31
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `cev_business`
 --
+CREATE DATABASE IF NOT EXISTS `cev_business` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `cev_business`;
 
 -- --------------------------------------------------------
 
@@ -34,6 +36,14 @@ CREATE TABLE `asignaciones_docentes` (
   `id_unidad_curricular` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `asignaciones_docentes`
+--
+
+INSERT INTO `asignaciones_docentes` (`id`, `id_seccion`, `id_docente`, `id_unidad_curricular`) VALUES
+(3, 1, 2, 2),
+(4, 1, 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -45,7 +55,9 @@ CREATE TABLE `calificaciones` (
   `id_evaluacion` int NOT NULL,
   `id_estudiante` int NOT NULL,
   `nota` decimal(4,2) NOT NULL,
-  `observaciones` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `observaciones` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -56,11 +68,18 @@ CREATE TABLE `calificaciones` (
 
 CREATE TABLE `docentes` (
   `id` int NOT NULL,
-  `id_usuario` int DEFAULT NULL,
-  `tipo_cedula` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'V',
-  `cedula` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `especialidad` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `id_usuario` int NOT NULL,
+  `especialidad` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `docentes`
+--
+
+INSERT INTO `docentes` (`id`, `id_usuario`, `especialidad`, `estado`) VALUES
+(1, 8, 'Redes', 'Activo'),
+(2, 9, 'Programación', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -70,11 +89,16 @@ CREATE TABLE `docentes` (
 
 CREATE TABLE `estudiantes` (
   `id` int NOT NULL,
-  `id_usuario` int DEFAULT NULL,
-  `tipo_cedula` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'V',
-  `cedula` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_usuario` int NOT NULL,
   `estado_academico` enum('Activo','Egresado','Retirado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `estudiantes`
+--
+
+INSERT INTO `estudiantes` (`id`, `id_usuario`, `estado_academico`) VALUES
+(1, 10, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -87,7 +111,9 @@ CREATE TABLE `evaluaciones` (
   `id_asignacion` int NOT NULL,
   `descripcion` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `porcentaje` decimal(5,2) NOT NULL,
-  `fecha_estimada` date DEFAULT NULL
+  `fecha_estimada` date DEFAULT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -128,8 +154,17 @@ CREATE TABLE `inscripciones` (
   `id_estudiante` int NOT NULL,
   `id_seccion` int NOT NULL,
   `fecha_inscripcion` date NOT NULL,
-  `estado` enum('Cursando','Retirado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cursando'
+  `estado` enum('Cursando','Retirado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Cursando',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `inscripciones`
+--
+
+INSERT INTO `inscripciones` (`id`, `id_estudiante`, `id_seccion`, `fecha_inscripcion`, `estado`, `creado_en`, `actualizado_en`) VALUES
+(1, 1, 1, '2026-07-10', 'Cursando', '2026-07-10 20:57:03', '2026-07-10 20:57:03');
 
 -- --------------------------------------------------------
 
@@ -172,7 +207,10 @@ CREATE TABLE `secciones` (
 --
 
 INSERT INTO `secciones` (`id`, `id_periodo`, `id_trayecto`, `codigo_seccion`, `turno`) VALUES
-(1, 1, 1, 'IN-1101', 'Diurno');
+(1, 1, 1, 'IN-1101', 'Diurno'),
+(2, 1, 2, 'IN-2101', 'Diurno'),
+(3, 1, 3, 'IN-3101', 'Diurno'),
+(4, 1, 4, 'IN-4101', 'Diurno');
 
 -- --------------------------------------------------------
 
@@ -204,7 +242,6 @@ INSERT INTO `trayectos` (`id`, `nombre`, `descripcion`) VALUES
 
 CREATE TABLE `unidades_curriculares` (
   `id` int NOT NULL,
-  `id_fase` int NOT NULL,
   `codigo` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nombre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unidades_credito` int NOT NULL
@@ -214,8 +251,30 @@ CREATE TABLE `unidades_curriculares` (
 -- Volcado de datos para la tabla `unidades_curriculares`
 --
 
-INSERT INTO `unidades_curriculares` (`id`, `id_fase`, `codigo`, `nombre`, `unidades_credito`) VALUES
-(1, 1, 'MAT-01', 'Matematica I', 4);
+INSERT INTO `unidades_curriculares` (`id`, `codigo`, `nombre`, `unidades_credito`) VALUES
+(1, 'MAT-01', 'Matematica I', 4),
+(2, 'IDI-01', 'Idiomas-I', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `unidad_curricular_fases`
+--
+
+CREATE TABLE `unidad_curricular_fases` (
+  `id_unidad_curricular` int NOT NULL,
+  `id_fase` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `unidad_curricular_fases`
+--
+
+INSERT INTO `unidad_curricular_fases` (`id_unidad_curricular`, `id_fase`) VALUES
+(1, 1),
+(2, 1),
+(1, 5),
+(2, 5);
 
 --
 -- Índices para tablas volcadas
@@ -243,7 +302,6 @@ ALTER TABLE `calificaciones`
 --
 ALTER TABLE `docentes`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `cedula` (`cedula`),
   ADD UNIQUE KEY `id_usuario` (`id_usuario`);
 
 --
@@ -251,7 +309,6 @@ ALTER TABLE `docentes`
 --
 ALTER TABLE `estudiantes`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `cedula` (`cedula`),
   ADD UNIQUE KEY `id_usuario` (`id_usuario`);
 
 --
@@ -304,8 +361,14 @@ ALTER TABLE `trayectos`
 --
 ALTER TABLE `unidades_curriculares`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `codigo` (`codigo`),
-  ADD KEY `fk_uc_fase` (`id_fase`);
+  ADD UNIQUE KEY `codigo` (`codigo`);
+
+--
+-- Indices de la tabla `unidad_curricular_fases`
+--
+ALTER TABLE `unidad_curricular_fases`
+  ADD PRIMARY KEY (`id_unidad_curricular`,`id_fase`),
+  ADD KEY `id_fase` (`id_fase`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -315,7 +378,7 @@ ALTER TABLE `unidades_curriculares`
 -- AUTO_INCREMENT de la tabla `asignaciones_docentes`
 --
 ALTER TABLE `asignaciones_docentes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `calificaciones`
@@ -327,13 +390,13 @@ ALTER TABLE `calificaciones`
 -- AUTO_INCREMENT de la tabla `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `evaluaciones`
@@ -351,7 +414,7 @@ ALTER TABLE `fases`
 -- AUTO_INCREMENT de la tabla `inscripciones`
 --
 ALTER TABLE `inscripciones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `periodos_academicos`
@@ -363,7 +426,7 @@ ALTER TABLE `periodos_academicos`
 -- AUTO_INCREMENT de la tabla `secciones`
 --
 ALTER TABLE `secciones`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `trayectos`
@@ -375,7 +438,7 @@ ALTER TABLE `trayectos`
 -- AUTO_INCREMENT de la tabla `unidades_curriculares`
 --
 ALTER TABLE `unidades_curriculares`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -423,10 +486,11 @@ ALTER TABLE `secciones`
   ADD CONSTRAINT `fk_seccion_trayecto` FOREIGN KEY (`id_trayecto`) REFERENCES `trayectos` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `unidades_curriculares`
+-- Filtros para la tabla `unidad_curricular_fases`
 --
-ALTER TABLE `unidades_curriculares`
-  ADD CONSTRAINT `fk_uc_fase` FOREIGN KEY (`id_fase`) REFERENCES `fases` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `unidad_curricular_fases`
+  ADD CONSTRAINT `unidad_curricular_fases_ibfk_1` FOREIGN KEY (`id_unidad_curricular`) REFERENCES `unidades_curriculares` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `unidad_curricular_fases_ibfk_2` FOREIGN KEY (`id_fase`) REFERENCES `fases` (`id`) ON DELETE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
