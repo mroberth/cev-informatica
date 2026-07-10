@@ -56,6 +56,16 @@ $menusSidebar = [
                 ],
             ],
             [
+                'id' => 'subInscripciones',
+                'titulo' => 'Inscripciones',
+                'icono' => 'bi-mortarboard',
+                'base' => '/a/inscripciones',
+                'items' => [
+                    ['href' => '/a/inscripciones/crear', 'icono' => 'bi-plus-circle', 'texto' => 'Crear'],
+                    ['href' => '/a/inscripciones/consultar', 'icono' => 'bi-search', 'texto' => 'Consultar'],
+                ],
+            ],
+            [
                 'id' => 'subEvaluacionesNotas',
                 'titulo' => 'Evaluaciones y Notas',
                 'icono' => 'bi-journal-text',

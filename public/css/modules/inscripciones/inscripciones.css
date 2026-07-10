@@ -1,0 +1,142 @@
+.dual-list-wrapper {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.dual-list-column {
+  flex: 1;
+  min-width: 0;
+}
+
+.dual-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.dual-list-header h6 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.dual-list-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+.dual-list-search {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.dual-list-search input {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.85rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.dual-list-search input:focus {
+  border-color: rgba(37, 212, 199, 0.55);
+  box-shadow: 0 0 0 0.15rem rgba(37, 212, 199, 0.1);
+}
+
+.dual-list-items {
+  padding: 0.5rem;
+  min-height: 300px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.dual-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 0.55rem;
+  background: #fff;
+  cursor: grab;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+}
+
+.dual-list-item:active {
+  cursor: grabbing;
+}
+
+.dual-list-item:hover {
+  border-color: rgba(37, 212, 199, 0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.dual-list-item.sortable-chosen {
+  border-color: rgba(37, 212, 199, 0.6);
+  box-shadow: 0 4px 16px rgba(37, 212, 199, 0.15);
+  transform: scale(1.02);
+}
+
+.dual-list-item.sortable-ghost {
+  opacity: 0.4;
+  border-style: dashed;
+  border-color: #25d4c7;
+  background: rgba(37, 212, 199, 0.04);
+}
+
+.dual-list-item .item-avatar {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.dual-list-item .item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.dual-list-item .item-info .item-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dual-list-item .item-info .item-cedula {
+  font-size: 0.78rem;
+  color: #6c757d;
+}
+
+.dual-list-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #adb5bd;
+}
+
+.dual-list-empty i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .dual-list-wrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
