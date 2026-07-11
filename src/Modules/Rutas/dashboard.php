@@ -6,7 +6,3 @@ Router::get('a/dashboard', function(){
     mostrarDashboard();
 });
 
-Router::get('u/dashboard', function(){
-    cargar_controlador('Dashboard', 'dashboardController.php');
-    mostrarDashboard();
-});

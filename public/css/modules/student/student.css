@@ -1,0 +1,375 @@
+:root {
+  --student-nav-height: 60px;
+  --student-bg: #f4f6fa;
+  --student-surface: #ffffff;
+  --student-primary: #0d6efd;
+  --student-accent: #25d4c7;
+  --student-text: #1a1a2e;
+  --student-muted: #6b7d98;
+  --student-border: #dfe5ef;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--student-bg);
+  color: var(--student-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.cev-student-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--student-nav-height);
+  background: var(--student-surface);
+  border-bottom: 1px solid var(--student-border);
+  z-index: 1000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.cev-student-navbar-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cev-student-navbar-start {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.cev-student-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--student-text);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.cev-student-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.cev-student-nav-links {
+  display: flex;
+  list-style: none;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.cev-student-nav-link {
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--student-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cev-student-nav-link:hover {
+  background: #f0f2f5;
+  color: var(--student-text);
+}
+
+.cev-student-nav-link.is-active {
+  background: var(--student-primary);
+  color: #fff;
+}
+
+/* ===== NAVBAR RIGHT ===== */
+.cev-student-navbar-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cev-student-icon-btn {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--student-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cev-student-icon-btn:hover {
+  background: #f0f2f5;
+  color: var(--student-text);
+}
+
+.cev-student-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--student-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.cev-student-profile-dropdown .dropdown-toggle::after {
+  display: none;
+}
+
+/* ===== MAIN ===== */
+.cev-student-main {
+  flex: 1;
+  margin-top: var(--student-nav-height);
+  padding: 32px 20px;
+  max-width: 1320px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== FOOTER ===== */
+.cev-student-footer {
+  border-top: 1px solid var(--student-border);
+  background: var(--student-surface);
+  padding: 16px 20px;
+}
+
+.cev-student-footer-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--student-muted);
+  font-size: 0.85rem;
+}
+
+/* ===== WELCOME ===== */
+.cev-student-welcome {
+  margin-bottom: 28px;
+}
+
+.cev-student-welcome h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.cev-student-welcome p {
+  color: var(--student-muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ===== GRID ===== */
+.cev-student-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .cev-student-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== CARDS ===== */
+.cev-student-card {
+  background: var(--student-surface);
+  border: 1px solid var(--student-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.cev-student-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cev-student-card-header h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cev-student-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--student-border);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--student-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cev-student-card-btn:hover {
+  background: var(--student-primary);
+  color: #fff;
+  border-color: var(--student-primary);
+}
+
+.cev-student-empty {
+  color: var(--student-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0;
+  margin: 0;
+}
+
+/* ===== COURSE CARD IN SIDEBAR ===== */
+.cev-student-subject-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--student-border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+
+.cev-student-subject-card:hover {
+  border-color: var(--student-primary);
+  background: #f8faff;
+  transform: translateX(2px);
+}
+
+.cev-student-subject-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.cev-student-subject-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cev-student-subject-info strong {
+  display: block;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cev-student-subject-info span {
+  font-size: 0.8rem;
+  color: var(--student-muted);
+}
+
+/* ===== PAGE HEADER ===== */
+.cev-student-page-header {
+  margin-bottom: 28px;
+}
+
+.cev-student-page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.cev-student-page-header p {
+  color: var(--student-muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ===== COURSES GRID (Mis Cursos) ===== */
+.cev-student-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.cev-student-course-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--student-surface);
+  border: 1px solid var(--student-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+}
+
+.cev-student-course-card:hover {
+  border-color: var(--student-primary);
+  box-shadow: 0 4px 16px rgba(13, 110, 253, 0.1);
+  transform: translateY(-2px);
+}
+
+.cev-student-course-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.cev-student-course-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.cev-student-course-body h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.cev-student-course-body p {
+  font-size: 0.85rem;
+  color: var(--student-muted);
+  margin: 0 0 6px;
+}
+
+.cev-student-course-meta {
+  font-size: 0.8rem;
+  color: var(--student-primary);
+}

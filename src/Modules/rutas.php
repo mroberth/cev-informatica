@@ -11,7 +11,12 @@ Router::antes('ALL', '*', function(){
 
 // ==================== MIDDLEWARE DE ADMIN ====================
 Router::antes('ALL', 'a/*', function(){
-    RoleMiddleware::procesar('Admin');
+    RoleMiddleware::procesar(['Admin', 'Superusuario']);
+});
+
+// ==================== MIDDLEWARE DE ESTUDIANTES ====================
+Router::antes('ALL', 'u/*', function(){
+    RoleMiddleware::procesar(['Admin', 'Superusuario', 'Estudiante']);
 });
 
 // ==================== CARGAR RUTAS POR MÓDULOS ====================

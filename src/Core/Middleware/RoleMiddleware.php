@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Core\Middleware;
 
 class RoleMiddleware{
-    public static function procesar(string $rolRequerido): void{
+    public static function procesar(array|string $rolesRequeridos): void{
+        $rolesRequeridos = is_array($rolesRequeridos) ? $rolesRequeridos : [$rolesRequeridos];
+
         $payload = AuthMiddleware::getUsuarioPayload();
 
         if(!$payload){
@@ -25,7 +27,15 @@ class RoleMiddleware{
             $userRol = strtolower($user['rol'] ?? $user['nombre_rol'] ?? '');
         }
 
-        if($userRol !== strtolower($rolRequerido)){
+        $permitido = false;
+        foreach ($rolesRequeridos as $rol) {
+            if ($userRol === strtolower($rol)) {
+                $permitido = true;
+                break;
+            }
+        }
+
+        if (!$permitido) {
             responder_error(403);
         }
     }
