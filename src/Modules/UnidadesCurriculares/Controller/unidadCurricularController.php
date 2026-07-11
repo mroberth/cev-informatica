@@ -47,6 +47,7 @@ function verificar_codigo_uc(): void {
 }
 
 function registrar_unidad_curricular(): void {
+    verificar_permiso('Unidades Curriculares', 'crear');
     header('Content-Type: application/json; charset=utf-8');
     $input = json_decode(file_get_contents('php://input'), true);
     if (!is_array($input)) {
@@ -127,6 +128,7 @@ function obtener_unidad_curricular(): void {
 }
 
 function actualizar_unidad_curricular(): void {
+    verificar_permiso('Unidades Curriculares', 'editar');
     header('Content-Type: application/json; charset=utf-8');
     $input = json_decode(file_get_contents('php://input'), true);
     if (!is_array($input)) {

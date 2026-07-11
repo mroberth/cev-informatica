@@ -141,8 +141,8 @@ $menusSidebar = [
                 'titulo' => 'Control de Acceso',
                 'icono' => 'bi-shield-lock',
                 'base' => '/a/control-acceso',
+                'url' => '/a/control-acceso',
                 'items' => [],
-                'placeholder' => true,
             ],
             [
                 'id' => 'subAuditoriaBitacora',

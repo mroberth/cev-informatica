@@ -6,7 +6,7 @@
   <main class="flex-grow-1 cev-login-shell">
     <div class="container-fluid px-0">
       <div class="row g-0 min-vh-100">
-        <section class="col-lg-8 d-flex align-items-center justify-content-center px-3 px-md-5 py-5 cev-login-panel cev-login-panel--form">
+        <section class="col-12 d-flex align-items-center justify-content-center px-3 px-md-5 py-5 cev-login-panel cev-login-panel--form">
           <div class="cev-form-card">
             <div class="cev-form-backdrop p-4 p-md-5">
               <div class="d-flex align-items-center gap-3 mb-4">
@@ -69,55 +69,6 @@
             </div>
           </div>
         </section>
-
-        <aside class="col-lg-4 d-flex align-items-center justify-content-center px-3 px-md-5 py-5 cev-login-panel cev-login-panel--tech">
-          <div class="cev-tech-content w-100" style="max-width: 24rem;">
-            <div class="mb-4">
-              <span class="cev-tech-badge mb-3">
-                <i class="bi bi-terminal-fill"></i>
-                Entorno institucional
-              </span>
-              <h2 class="h3 fw-bold mb-3" style="letter-spacing: -0.03em;">Sistema académico seguro y confiable.</h2>
-              <p class="mb-0" style="color: rgba(232, 241, 255, 0.72);">Una composición discreta, alineada con la identidad institucional del CEV y centrada en el acceso.</p>
-            </div>
-
-            <div class="cev-code-window mb-4">
-              <div class="cev-code-window__bar">
-                <span class="cev-code-window__dot cev-code-window__dot--red"></span>
-                <span class="cev-code-window__dot cev-code-window__dot--amber"></span>
-                <span class="cev-code-window__dot cev-code-window__dot--green"></span>
-              </div>
-              <div class="cev-code-window__body">
-                <span class="cev-code-line"><span class="cev-code-comment">// CEV Informática</span></span>
-                <span class="cev-code-line"><span class="cev-code-keyword">acceso</span> = <span class="cev-code-string">'institucional'</span>;</span>
-                <span class="cev-code-line"><span class="cev-code-keyword">estado</span> = <span class="cev-code-accent">autenticación segura</span>;</span>
-                <span class="cev-code-line"><span class="cev-code-keyword">rol</span> = <span class="cev-code-string">'estudiante / docente / admin'</span>;</span>
-                <span class="cev-code-line"><span class="cev-code-keyword">sistema</span> = <span class="cev-code-accent">CEV</span>;</span>
-              </div>
-            </div>
-
-            <div class="row g-3">
-              <div class="col-sm-6">
-                <div class="p-3 rounded-4 h-100" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);">
-                  <div class="d-flex align-items-center gap-2 mb-2" style="color: #8fe7de;">
-                    <i class="bi bi-building"></i>
-                    <span class="fw-semibold">Institucional</span>
-                  </div>
-                  <p class="mb-0 small" style="color: rgba(232, 241, 255, 0.7);">Estética sobria y alineada a la identidad del centro académico.</p>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="p-3 rounded-4 h-100" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08);">
-                  <div class="d-flex align-items-center gap-2 mb-2" style="color: #8fb7ff;">
-                    <i class="bi bi-shield-check"></i>
-                    <span class="fw-semibold">Acceso seguro</span>
-                  </div>
-                  <p class="mb-0 small" style="color: rgba(232, 241, 255, 0.7);">El panel acompaña sin competir con el formulario principal.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   </main>

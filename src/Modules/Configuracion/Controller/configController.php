@@ -29,7 +29,7 @@ function verificar_modulo(): void {
     exit;
 }
 
-function verificar_permiso(): void {
+function verificar_nombre_permiso(): void {
     header('Content-Type: application/json; charset=utf-8');
     $nombre = trim($_GET['nombre'] ?? '');
     $idExcluir = isset($_GET['id_excluir']) ? (int) $_GET['id_excluir'] : null;

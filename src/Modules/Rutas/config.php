@@ -24,8 +24,8 @@ Router::get('a/configuracion/verificar_modulo', function() {
 });
 
 Router::get('a/configuracion/verificar_permiso', function() {
-    cargar_controlador('Configuracion','configController.php');
-    verificar_permiso();
+    cargar_controlador('Configuracion', 'configController.php');
+    verificar_nombre_permiso();
 });
 
 // ==================== ROLES ====================

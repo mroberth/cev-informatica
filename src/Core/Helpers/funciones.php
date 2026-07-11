@@ -100,8 +100,40 @@ function responder_error(int $codigo): void{
         exit;
     }
 
+    $codigoHttp = $codigo;
     require_once BASE_PATH . '/src/views/errors/error_general.php';
     exit;
+}
+
+function verificar_permiso(string $modulo, string $accion): void {
+    $payload = \Core\Middleware\AuthMiddleware::getUsuarioPayload();
+    if (!$payload) {
+        responder_error(401);
+    }
+
+    $user = is_array($payload) ? ($payload['user'] ?? null) : null;
+    $nombreRol = '';
+    if (is_array($user)) {
+        $nombreRol = $user['rol'] ?? $user['nombre_rol'] ?? '';
+    } elseif (is_object($user)) {
+        $nombreRol = $user->rol ?? $user->nombre_rol ?? '';
+    }
+
+    if (empty($nombreRol)) {
+        responder_error(403);
+    }
+
+    try {
+        if (!class_exists('App\\ControlAcceso\\Repository\\ControlAccesoRepository')) {
+            require_once BASE_PATH . '/src/Modules/ControlAcceso/Repository/ControlAccesoRepository.php';
+        }
+        $repo = new App\ControlAcceso\Repository\ControlAccesoRepository();
+        if (!$repo->tienePermiso($nombreRol, $modulo, $accion)) {
+            responder_error(403);
+        }
+    } catch (\Exception $e) {
+        responder_error(403);
+    }
 }
 
 function registrar_en_bitacora(

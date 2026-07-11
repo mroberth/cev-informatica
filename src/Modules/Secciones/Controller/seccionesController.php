@@ -22,6 +22,7 @@ function consultar_secciones(): void {
  * Registra una nueva sección en la base de datos
  */
 function registrar_seccion(): void {
+    verificar_permiso('Secciones', 'crear');
     header('Content-Type: application/json; charset=utf-8');
 
     $input = json_decode(file_get_contents('php://input'), true);
@@ -123,6 +124,7 @@ function obtener_seccion(): void {
  * Actualiza una sección existente
  */
 function actualizar_seccion(): void {
+    verificar_permiso('Secciones', 'editar');
     header('Content-Type: application/json; charset=utf-8');
 
     $input = json_decode(file_get_contents('php://input'), true);
