@@ -142,12 +142,10 @@ export const initLogin = () => {
           showConfirmButton: false
         });
 
-        // 5. Redirección según la URL que indique el backend (con token en query param por si la cookie no se propaga)
+        // 5. Redirección según la URL que indique el backend
         setTimeout(() => {
           const redirectUrl = response.data.redirect || '/u/dashboard';
-          const token = localStorage.getItem('token');
-          const separator = redirectUrl.includes('?') ? '&' : '?';
-          window.location.href = redirectUrl + separator + 'token=' + encodeURIComponent(token);
+          window.location.href = redirectUrl;
         }, 1500);
 
       } catch (error) {

@@ -45,7 +45,11 @@ function iniciar_sesion(): void{
 
         $data = $tokenDTO->toArray();
         $rol = strtolower($data['user']['nombre_rol'] ?? '');
-        $data['redirect'] = $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+        $data['redirect'] = match ($rol) {
+            'admin', 'superusuario' => '/a/dashboard',
+            'profesor' => '/p/dashboard',
+            default => '/u/dashboard',
+        };
 
         http_response_code(200);
         echo json_encode([
@@ -105,7 +109,11 @@ function refrescar_token(): void{
 
         $data = $tokenDTO->toArray();
         $rol = strtolower($data['user']['nombre_rol'] ?? '');
-        $data['redirect'] = $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+        $data['redirect'] = match ($rol) {
+            'admin', 'superusuario' => '/a/dashboard',
+            'profesor' => '/p/dashboard',
+            default => '/u/dashboard',
+        };
 
         http_response_code(200);
         echo json_encode([

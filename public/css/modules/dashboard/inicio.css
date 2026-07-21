@@ -48,7 +48,23 @@ body {
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
+  overflow-y: overlay;
   padding: 0.35rem 0 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .sidebar-nav .nav-item {
@@ -274,6 +290,12 @@ body {
   font-size: 1.5rem;
   color: #495057;
   cursor: pointer;
+}
+
+.chart-wrapper {
+  position: relative;
+  min-height: 240px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

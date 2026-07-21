@@ -373,3 +373,321 @@ body {
   font-size: 0.8rem;
   color: var(--student-primary);
 }
+
+/* ===== PAGINA DE MATERIA ===== */
+.cev-student-back-link {
+  display: inline-block;
+  color: var(--student-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+.cev-student-back-link:hover {
+  color: var(--student-primary);
+}
+
+.cev-student-materia-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--student-border);
+  margin-bottom: 20px;
+}
+.cev-student-tab {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 0.9rem;
+  color: var(--student-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+.cev-student-tab:hover {
+  color: var(--student-text);
+}
+.cev-student-tab.active {
+  color: var(--student-primary);
+  border-bottom-color: var(--student-primary);
+  font-weight: 600;
+}
+.cev-tab-content {
+  display: none;
+}
+.cev-tab-content.active {
+  display: block;
+}
+
+/* Recursos grid */
+.cev-recursos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cev-recurso-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: var(--student-surface);
+  border: 1px solid var(--student-border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.cev-recurso-card:hover {
+  border-color: var(--student-primary);
+  box-shadow: 0 2px 12px rgba(13,110,253,0.08);
+}
+.cev-recurso-card:hover .cev-recurso-action i {
+  transform: translate(2px, -2px);
+}
+.cev-recurso-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.cev-recurso-body {
+  flex: 1;
+  min-width: 0;
+}
+.cev-recurso-titulo {
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 4px;
+}
+.cev-recurso-descripcion {
+  font-size: 0.85rem;
+  color: var(--student-muted);
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+.cev-recurso-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.78rem;
+}
+.cev-recurso-tipo {
+  background: var(--student-bg);
+  padding: 2px 10px;
+  border-radius: 20px;
+  color: var(--student-muted);
+  font-weight: 500;
+}
+.cev-recurso-fecha,
+.cev-recurso-autor {
+  color: var(--student-muted);
+}
+.cev-recurso-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--student-muted);
+  font-size: 1.1rem;
+}
+.cev-recurso-action i {
+  transition: transform 0.2s;
+}
+
+/* Evaluaciones grid (student) */
+.cev-student-eval-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cev-student-eval-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--student-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: box-shadow 0.2s;
+}
+.cev-student-eval-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.cev-student-eval-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  font-size: 1.3rem;
+}
+.cev-student-eval-body {
+  flex: 1;
+  min-width: 0;
+}
+.cev-student-eval-body strong {
+  font-size: 0.95rem;
+  color: var(--student-text);
+  display: block;
+  margin-bottom: 2px;
+}
+.cev-student-eval-desc {
+  font-size: 0.85rem;
+  color: var(--student-muted);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+.cev-student-eval-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--student-muted);
+}
+.cev-student-eval-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cev-student-eval-tipo {
+  background: var(--student-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Notas grid */
+.cev-student-notas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cev-student-nota-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid var(--student-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  gap: 12px;
+}
+.cev-student-nota-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+.cev-student-nota-info {
+  flex: 1;
+  min-width: 0;
+}
+.cev-student-nota-info strong {
+  font-size: 0.95rem;
+  color: var(--student-text);
+  display: block;
+  margin-bottom: 2px;
+}
+.cev-student-nota-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--student-muted);
+}
+.cev-student-nota-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cev-student-nota-obs {
+  font-size: 0.82rem;
+  color: var(--student-muted);
+  margin: 6px 0 0;
+  font-style: italic;
+}
+.cev-student-nota-right {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 56px;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.cev-student-nota-right.nota-aprobada {
+  color: #198754;
+  background: #19875415;
+}
+.cev-student-nota-right.nota-reprobada {
+  color: #dc3545;
+  background: #dc354515;
+}
+.cev-student-nota-right.nota-pendiente {
+  color: #6c757d;
+  background: #6c757d15;
+}
+
+/* Task cards in sidebar */
+.cev-student-task-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border-left: 3px solid var(--student-primary);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--student-text);
+  transition: background 0.15s;
+  margin-bottom: 8px;
+}
+.cev-student-task-card:hover {
+  background: var(--student-bg);
+}
+.cev-student-task-body {
+  flex: 1;
+  min-width: 0;
+}
+.cev-student-task-body strong {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+.cev-student-task-materia {
+  font-size: 0.75rem;
+  color: var(--student-muted);
+}
+.urg-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.urg-badge-vencida {
+  background: #dc354515;
+  color: #dc3545;
+}
+.urg-badge-proxima {
+  background: #fd7e1415;
+  color: #fd7e14;
+}
+.urg-badge-pendiente {
+  background: #0d6efd15;
+  color: #0d6efd;
+}

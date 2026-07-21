@@ -21,3 +21,13 @@ Router::get('u/mis-cursos/data', function () {
     cargar_controlador('Student', 'studentController.php');
     student_mis_cursos_data();
 });
+
+Router::get('u/dashboard/data', function () {
+    cargar_controlador('Student', 'studentController.php');
+    student_dashboard_data();
+});
+
+Router::get('u/dashboard/proximas', function () {
+    cargar_controlador('Student', 'studentController.php');
+    student_dashboard_proximas();
+});

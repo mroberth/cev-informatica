@@ -1,6 +1,6 @@
 <div class="cev-student-welcome">
   <h1>Bienvenido, <span id="nombreEstudiante">Estudiante</span></h1>
-  <p>Trayecto <span id="trayectoEstudiante">—</span></p>
+  <p>Cursando: <span id="trayectoEstudiante">—</span></p>
 </div>
 
 <div class="cev-student-grid">

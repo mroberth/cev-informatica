@@ -57,6 +57,8 @@ require_once BASE_PATH . '/src/views/layouts/head.php';
 
 </div>
 
+<script type="module" src="/js/notifications.js"></script>
+
 <?php foreach ($pageScripts as $script): ?>
 <script src="<?= $script ?>"></script>
 <?php endforeach; ?>

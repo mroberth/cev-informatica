@@ -1,6 +1,19 @@
 // En un monolito, la raíz es relativa. Dejamos una barra para que parta de la base del host actual.
 const API_BASE_URL = '/';
 
+function obtenerCookie(name) {
+  const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return match ? match.pop() : '';
+}
+
+function csrfHeaders(method) {
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+    const token = obtenerCookie('csrf_token');
+    if (token) return { 'X-CSRF-Token': token };
+  }
+  return {};
+}
+
 class ApiClient {
   constructor(baseUrl = API_BASE_URL) {
     this.baseUrl = baseUrl;
@@ -13,6 +26,7 @@ class ApiClient {
     const headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      ...csrfHeaders(options.method || 'GET'),
       ...options.headers,
     };
 
@@ -82,7 +96,11 @@ class ApiClient {
       
       const res = await fetch(urlRefresh, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': obtenerCookie('csrf_token'),
+        },
         credentials: 'include',
         body: JSON.stringify({}),
       });

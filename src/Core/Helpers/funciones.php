@@ -62,7 +62,11 @@ function url_inicio_error(): string{
                 $rol = '';
             }
 
-            return $rol === 'admin' ? '/a/dashboard' : '/u/dashboard';
+            return match ($rol) {
+                'admin', 'superusuario' => '/a/dashboard',
+                'profesor' => '/p/dashboard',
+                default => '/u/dashboard',
+            };
         }
     }
 

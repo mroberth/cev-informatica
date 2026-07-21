@@ -3,14 +3,19 @@ ob_start();
 define('BASE_PATH', dirname(__DIR__, 1));
 define('BASE_URL', '/');
 
+require_once BASE_PATH . '/vendor/autoload.php';
+\Core\Exception\ManejadorErrorGlobal::registrar();
+\Core\Config\DotEnv::cargar(BASE_PATH . '/.env');
+
 //================== CORS MIDDLEWARE GLOBAL ==================//
 $origen = $_SERVER['HTTP_ORIGIN'] ?? '';
-$origenesPermitidos = [
+$origenesPermitidos = array_filter([
     'http://localhost:8080',
     'http://localhost:8100',
     'http://localhost:3000',
     'http://localhost:5173',
-];
+    $_ENV['APP_URL'] ?? null,
+]);
 
 if (in_array($origen, $origenesPermitidos)) {
     header("Access-Control-Allow-Origin: " . $origen);
@@ -29,9 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // =======================================================
 session_start();
 
-require_once BASE_PATH . '/vendor/autoload.php';
-\Core\Exception\ManejadorErrorGlobal::registrar();
-\Core\Config\DotEnv::cargar(BASE_PATH . '/.env');
 require_once BASE_PATH . '/src/Modules/rutas.php';
 
 \Core\Http\Router::ejecutar();

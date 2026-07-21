@@ -74,14 +74,6 @@ class AuthMiddleware{
 
             self::$usuarioPayload = $decodedArray;
 
-            // Si el token vino de query param, setear cookie y redirigir a la URL limpia
-            if(isset($_GET['token'])){
-                self::guardarCookieAcceso($token);
-                $cleanUrl = strtok($_SERVER['REQUEST_URI'], '?');
-                header('Location: ' . $cleanUrl);
-                exit;
-            }
-
             return true;
         } catch(Exception $e){
             return false;
@@ -128,10 +120,6 @@ class AuthMiddleware{
 
         if(isset($_COOKIE['access_token'])){
             return $_COOKIE['access_token'];
-        }
-
-        if(isset($_GET['token']) && is_string($_GET['token'])){
-            return $_GET['token'];
         }
 
         return null;

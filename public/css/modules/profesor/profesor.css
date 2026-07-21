@@ -1,0 +1,212 @@
+:root {
+  --prof-nav-height: 60px;
+  --prof-bg: #f0f2f5;
+  --prof-surface: #ffffff;
+  --prof-primary: #0d6efd;
+  --prof-accent: #198754;
+  --prof-text: #1a1a2e;
+  --prof-muted: #6b7d98;
+  --prof-border: #dee2e9;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--prof-bg);
+  color: var(--prof-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--prof-nav-height);
+}
+
+/* ===== NAVBAR ===== */
+.cev-prof-navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--prof-nav-height);
+  background: var(--prof-surface);
+  border-bottom: 1px solid var(--prof-border);
+  z-index: 1000;
+}
+.cev-prof-navbar-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; padding: 0 20px;
+}
+.cev-prof-navbar-start { display: flex; align-items: center; gap: 32px; }
+.cev-prof-brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--prof-text); font-weight: 700; font-size: 1.1rem;
+}
+.cev-prof-logo { width: 32px; height: 32px; border-radius: 8px; }
+.cev-prof-nav-links { display: flex; gap: 4px; list-style: none; align-items: center; }
+.cev-prof-nav-link {
+  padding: 8px 16px; border-radius: 8px; text-decoration: none;
+  color: var(--prof-muted); font-size: 0.9rem; transition: all 0.2s;
+}
+.cev-prof-nav-link:hover { background: var(--prof-bg); color: var(--prof-text); }
+.cev-prof-navbar-end { display: flex; align-items: center; gap: 12px; }
+.cev-prof-icon-btn {
+  background: none; border: none; width: 40px; height: 40px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.2rem; color: var(--prof-muted);
+  padding: 0;
+}
+.cev-prof-icon-btn.dropdown-toggle::after {
+  display: none;
+}
+.cev-prof-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--prof-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 0.9rem; line-height: 1; flex-shrink: 0;
+}
+
+/* ===== MAIN ===== */
+.cev-prof-main {
+  flex: 1; max-width: 1200px; width: 100%; margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* ===== PAGE HEADER ===== */
+.cev-prof-page-header { margin-bottom: 24px; }
+.cev-prof-page-header h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; }
+.cev-prof-page-header p { color: var(--prof-muted); margin: 0; font-size: 0.9rem; }
+.cev-prof-back-link {
+  display: inline-block; color: var(--prof-muted); text-decoration: none;
+  font-size: 0.9rem; margin-bottom: 8px;
+}
+.cev-prof-back-link:hover { color: var(--prof-primary); }
+
+/* ===== STATS ===== */
+.cev-prof-stats-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.cev-prof-stat-card {
+  background: var(--prof-surface); border: 1px solid var(--prof-border);
+  border-radius: 12px; padding: 20px; text-align: center;
+}
+.cev-prof-stat-number { font-size: 2rem; font-weight: 700; color: var(--prof-primary); }
+.cev-prof-stat-label { font-size: 0.85rem; color: var(--prof-muted); margin-top: 4px; }
+
+/* ===== SECTION ===== */
+.cev-prof-section { margin-bottom: 32px; }
+.cev-prof-section-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.cev-prof-section-header h2 { font-size: 1.15rem; font-weight: 600; }
+.cev-prof-section-link { color: var(--prof-primary); text-decoration: none; font-size: 0.9rem; }
+.cev-prof-section-link:hover { text-decoration: underline; }
+
+/* ===== MATERIAS GRID ===== */
+.cev-prof-materias-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+}
+.cev-prof-materia-card {
+  display: flex; flex-direction: column;
+  background: var(--prof-surface); border: 1px solid var(--prof-border);
+  border-radius: 12px; text-decoration: none; color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s; overflow: hidden;
+}
+.cev-prof-materia-card:hover {
+  border-color: var(--prof-primary); box-shadow: 0 4px 16px rgba(13,110,253,0.1);
+}
+.cev-prof-materia-badge {
+  padding: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff;
+}
+.cev-prof-materia-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.cev-prof-materia-card-body strong { font-size: 1rem; }
+.cev-prof-materia-code { font-size: 0.8rem; color: var(--prof-muted); }
+.cev-prof-materia-meta { font-size: 0.85rem; color: var(--prof-muted); }
+.cev-prof-materia-periodo { font-size: 0.8rem; color: var(--prof-primary); font-weight: 500; }
+.cev-prof-materia-card-footer {
+  padding: 10px 16px; border-top: 1px solid var(--prof-border);
+  font-size: 0.8rem; color: var(--prof-muted);
+}
+.cev-prof-empty { color: var(--prof-muted); font-size: 0.9rem; padding: 20px 0; }
+
+/* ===== TOOLBAR ===== */
+.cev-prof-toolbar { margin-bottom: 20px; }
+.cev-prof-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border: none; border-radius: 8px;
+  font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.cev-prof-btn-primary { background: var(--prof-primary); color: #fff; }
+.cev-prof-btn-primary:hover { background: #0b5ed7; }
+
+/* ===== RECURSOS LISTA ===== */
+.cev-prof-recursos-lista { display: flex; flex-direction: column; gap: 12px; }
+.cev-prof-recurso-item {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px; background: var(--prof-surface); border: 1px solid var(--prof-border);
+  border-radius: 10px;
+}
+.cev-prof-recurso-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.cev-prof-recurso-body { flex: 1; min-width: 0; }
+.cev-prof-recurso-body strong { font-size: 0.95rem; display: block; margin-bottom: 4px; }
+.cev-prof-recurso-desc { font-size: 0.85rem; color: var(--prof-muted); margin: 0 0 8px; }
+.cev-prof-recurso-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.cev-prof-recurso-tipo {
+  padding: 2px 10px; border-radius: 20px; background: var(--prof-bg);
+  color: var(--prof-muted); font-size: 0.78rem; font-weight: 500;
+}
+.cev-prof-recurso-link {
+  font-size: 0.8rem; color: var(--prof-primary); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.cev-prof-recurso-link:hover { text-decoration: underline; }
+.cev-prof-recurso-delete {
+  background: none; border: none; color: #dc3545; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 6px; display: flex;
+  align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0;
+}
+.cev-prof-recurso-delete:hover { background: #dc354515; }
+
+/* ===== FOOTER ===== */
+.cev-prof-footer {
+  border-top: 1px solid var(--prof-border); background: var(--prof-surface); padding: 16px 0;
+  margin-top: auto;
+}
+.cev-prof-footer-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 20px;
+  text-align: center; font-size: 0.8rem; color: var(--prof-muted);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .cev-prof-nav-links { display: none; }
+  .cev-prof-materias-grid { grid-template-columns: 1fr; }
+}
+
+/* Actions in recurso/evaluacion items */
+.cev-prof-recurso-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.cev-prof-recurso-btn {
+  background: none;
+  border: 1px solid var(--prof-border);
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--prof-primary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cev-prof-recurso-btn:hover {
+  background: var(--prof-primary);
+  color: #fff;
+  border-color: var(--prof-primary);
+}

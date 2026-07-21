@@ -1,0 +1,127 @@
+.cev-perfil-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.cev-perfil-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cev-perfil-header h2,
+.cev-perfil-header h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
+}
+
+.cev-perfil-header h3 {
+  font-size: 1.1rem;
+}
+
+.cev-perfil-avatar-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cev-perfil-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cev-perfil-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #0d6efd;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.cev-perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cev-perfil-avatar-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0d6efd;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #fff;
+  font-size: 0.9rem;
+}
+
+.cev-perfil-avatar-overlay:hover {
+  background: #0b5ed7;
+}
+
+.cev-perfil-avatar-hint {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+.cev-perfil-form .form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.cev-perfil-form input[readonly] {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.cev-perfil-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s;
+}
+
+.cev-perfil-btn-primary {
+  background: #0d6efd;
+  color: #fff;
+}
+
+.cev-perfil-btn-primary:hover {
+  background: #0b5ed7;
+}
+
+.cev-perfil-btn-secondary {
+  background: #198754;
+  color: #fff;
+}
+
+.cev-perfil-btn-secondary:hover {
+  background: #157347;
+}
